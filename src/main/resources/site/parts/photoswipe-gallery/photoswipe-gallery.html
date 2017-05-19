@@ -1,0 +1,32 @@
+<div>
+	<header>
+		<h1 data-th-text="${name}">
+		Gallery
+		</h1>
+	</header>
+	<div
+		class="pswp-gallery-container image-container row clearfix"
+		itemscope=""
+		itemtype="http://schema.org/ImageGallery"
+	>
+	<figure
+		class="col-xs-6 col-sm-4 col-md-3"
+		data-th-each="image, index : ${data.images}"
+		itemprop="associatedMedia"
+		itemscope=""
+		itemtype="http://schema.org/ImageObject"
+		>
+					<a
+						data-size="1920x1920"
+						data-th-href="${portal.imageUrl({ '_id=' + image, '_scale=square(1920)'})}"
+						itemprop="contentUrl"
+					>
+						<img 
+							class="img-responsive img-rounded"
+							data-th-src="${portal.imageUrl({ '_id=' + image, '_scale=square(768)'})}"
+						/>
+						<figcaption class="sr-only"><strong>Dummy <span data-th-text="${index.count + '/' + index.size}" /></strong><br /><span data-th-text="${'[' + index.current + ']'}"/></figcaption>
+					</a><br/>
+		</figure>
+	</div>
+</div>

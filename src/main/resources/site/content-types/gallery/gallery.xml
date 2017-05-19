@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content-type>
+	<display-name>Gallery</display-name>
+	<super-type>base:structured</super-type>
+	<is-abstract>false</is-abstract>
+	<is-final>true</is-final>
+	<allow-child-content>true</allow-child-content>
+	<form>
+		<field-set name="meta">
+			<label>Meta data</label>
+			<help-text>Meta data for the gallery</help-text>
+			<items>
+				<input name="tags" type="Tag">
+					<label>Tags</label>
+					<help-text>Tags that describe the content of the gallery</help-text>
+					<occurrences minimum="0" maximum="0"/>
+				</input>
+				<input name="date" type="Date">
+					<label>Date for the gallery</label>
+					<help-text>Date for the gallery</help-text>
+					<occurrences minimum="0" maximum="0"/>
+					<config>
+						<timezone>true</timezone>
+					</config>
+				</input>
+			</items>
+		</field-set>
+		<field-set name="content">
+			<label>Content</label>
+			<help-text>Contents of the gallery</help-text>
+			<items>
+				<input name="images" type="ImageSelector">
+					<label>Images</label>
+					<help-text>Upload your images</help-text>
+					<occurrences minimum="0" maximum="0"/>
+					<config>
+						<allowPath>./*</allowPath>
+					</config>
+				</input>
+			</items>
+		</field-set>
+	</form>
+</content-type>

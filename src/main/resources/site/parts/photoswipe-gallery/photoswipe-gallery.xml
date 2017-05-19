@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<part>
+	<display-name>Display gallery</display-name>
+	<config>
+		<field-set name="gallery">
+			<label>Gallery</label>
+			<items>
+				<input name="gallery" type="ContentSelector">
+					<label>Select gallery</label>
+					<help-text>Select gallery to display</help-text>
+					<occurrences minimum="1" maximum="1"/>
+					<config>
+						<relationshipType>system:reference</relationshipType>
+						<allowContentType>gallery</allowContentType>
+						<allowPath>${site}/</allowPath>
+				  </config>
+				</input>
+			</items>
+		</field-set>
+	</config>
+</part>

@@ -1,0 +1,3 @@
+[submodule "PhotoSwipe"]
+	path = PhotoSwipe
+	url = ./PhotoSwipe
