@@ -1,40 +1,57 @@
-<div>
+<style>
+	.vertical-align {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* justify-content: center; */
+  /* background: red; */
+	}
+	.pswp-gallery-wrapper-style {
+	background-color: rgba(0, 0, 0, 0.49);
+  border-radius: 0.3em;
+  padding: 15px;
+  margin-bottom: 15px;
+  color: #fff;
+	}
+</style>
+<div class="pswp-gallery-wrapper">
 	<header>
 		<h1 data-th-text="${name}">
 		Gallery
 		</h1>
 	</header>
 	<div
-		class="pswp-gallery-container image-container row clearfix"
+		class="pswp-gallery-container image-container row clearfix  vertical-align"
+		data-th-attr="user-settings=${userSettings}"
 		itemscope=""
 		itemtype="http://schema.org/ImageGallery"
-	>
-	<figure
-		class="col-xs-6 col-sm-4 col-md-3"
-		data-th-each="image, index : ${images}"
-		itemprop="associatedMedia"
-		itemscope=""
-		itemtype="http://schema.org/ImageObject"
 		>
-					<a
-						data-th-attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
-						data-th-href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
-						itemprop="contentUrl"
-					>
-						<img 
-							class="img-responsive img-rounded"
-							data-th-src="${portal.imageUrl({ '_id=' + image.id, '_scale=square(768)'})}"
-						/>
-						<figcaption class="sr-only">
-							<strong data-th-text="${image.title}" />
-							<div data-th-remove="${(image.caption == '') ? 'all' : 'tag'}">
-								<br /><em data-th-text="${image.caption}" />
-							</div>
-							<div data-th-remove="${(image.artist == '') ? 'all' : 'tag'}">
-								<br /><span data-th-text="${'Foto: ' + image.artist}"/>
-							</div>
-						</figcaption>
-					</a><br/>
-		</figure>
+		<figure
+			class="col-xs-6 col-sm-4 col-md-3"
+			data-th-each="image, index : ${images}"
+			itemprop="associatedMedia"
+			itemscope=""
+			itemtype="http://schema.org/ImageObject"
+			>
+			<a
+				data-th-attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
+				data-th-href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
+				itemprop="contentUrl"
+				>
+				<img
+				class="img-responsive img-rounded"
+				data-th-src="${portal.imageUrl({ '_id=' + image.id, '_scale=max(768)'})}"
+				/>
+				<figcaption class="sr-only">
+				<strong data-th-text="${image.title}" />
+				<div data-th-remove="${(image.caption == '') ? 'all' : 'tag'}">
+					<br /><em data-th-text="${image.caption}" />
+				</div>
+				<div data-th-remove="${(image.artist == '') ? 'all' : 'tag'}">
+					<br /><span data-th-text="${'Foto: ' + image.artist}"/>
+					</div>
+					</figcaption>
+				</a><br/>
+			</figure>
+		</div>
 	</div>
-</div>

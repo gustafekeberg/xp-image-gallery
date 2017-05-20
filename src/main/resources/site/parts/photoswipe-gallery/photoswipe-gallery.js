@@ -16,12 +16,19 @@ exports.get = function(req) {
 	var pswpRootEl = resolve('photoswipe-root-el.html')
 	var pswpInit = resolve('photoswipe-init.html')
 	var images = collectImageData(data.images);
+	var userSettings = {
+		// showAnimationDuration: 0,
+		// hideAnimationDuration: 0,
+		// showHideOpacity: true,
+		// getThumbBoundsFn: false,
+	};
 
 	var model = {
 		name: gallery.displayName,
 		tags: data.tags,
 		images: images,
 		data: data,
+		userSettings: JSON.stringify(userSettings)
 	};
 	var assets = libs.thymeleaf.render(pswpAssets, {});
 	var rootEl = libs.thymeleaf.render(pswpRootEl, {});
