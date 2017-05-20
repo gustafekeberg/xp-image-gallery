@@ -11,21 +11,29 @@
 	>
 	<figure
 		class="col-xs-6 col-sm-4 col-md-3"
-		data-th-each="image, index : ${data.images}"
+		data-th-each="image, index : ${images}"
 		itemprop="associatedMedia"
 		itemscope=""
 		itemtype="http://schema.org/ImageObject"
 		>
 					<a
-						data-size="1920x1920"
-						data-th-href="${portal.imageUrl({ '_id=' + image, '_scale=square(1920)'})}"
+						data-th-attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
+						data-th-href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
 						itemprop="contentUrl"
 					>
 						<img 
 							class="img-responsive img-rounded"
-							data-th-src="${portal.imageUrl({ '_id=' + image, '_scale=square(768)'})}"
+							data-th-src="${portal.imageUrl({ '_id=' + image.id, '_scale=square(768)'})}"
 						/>
-						<figcaption class="sr-only"><strong>Dummy <span data-th-text="${index.count + '/' + index.size}" /></strong><br /><span data-th-text="${'[' + index.current + ']'}"/></figcaption>
+						<figcaption class="sr-only">
+							<strong data-th-text="${image.title}" />
+							<div data-th-remove="${(image.caption == '') ? 'all' : 'tag'}">
+								<br /><em data-th-text="${image.caption}" />
+							</div>
+							<div data-th-remove="${(image.artist == '') ? 'all' : 'tag'}">
+								<br /><span data-th-text="${'Foto: ' + image.artist}"/>
+							</div>
+						</figcaption>
 					</a><br/>
 		</figure>
 	</div>

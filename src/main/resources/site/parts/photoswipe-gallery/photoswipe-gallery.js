@@ -15,11 +15,12 @@ exports.get = function(req) {
 	var pswpAssets = resolve('photoswipe-assets.html');
 	var pswpRootEl = resolve('photoswipe-root-el.html')
 	var pswpInit = resolve('photoswipe-init.html')
+	var images = collectImageData(data.images);
 
 	var model = {
 		name: gallery.displayName,
 		tags: data.tags,
-		images: data.images,
+		images: images,
 		data: data,
 	};
 	var assets = libs.thymeleaf.render(pswpAssets, {});
@@ -40,4 +41,28 @@ exports.get = function(req) {
 
 exports.post = function(req) {
 	return req;
+}
+
+function collectImageData (list) {
+	var array = [];
+	for (var i = 0, len = list.length; i < len; i ++ )
+	{
+		var c = libs.content.get({key: list[i]});
+		var data = c.data;
+		var media = c.x.media;
+		var imageInfo = media.imageInfo;
+		var imageData = {
+			id: c._id,
+			title: c.displayName,
+			caption: data.caption,
+			artist: data.artist,
+			copyright: data.copyright,
+			tags: data.tags,
+			// data: data,
+			// media: media,
+			dimensions: [imageInfo.imageWidth, imageInfo.imageHeight],
+		}
+		array.push(imageData);
+	}
+	return array;
 }
