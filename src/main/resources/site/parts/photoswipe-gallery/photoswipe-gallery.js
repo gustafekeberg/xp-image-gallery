@@ -12,6 +12,7 @@ exports.get = function(req) {
 	var data = gallery.data;
 
 	var view = resolve('photoswipe-gallery.html');
+	var style = resolve('photoswipe-style.html');
 	var pswpAssets = resolve('photoswipe-assets.html');
 	var pswpRootEl = resolve('photoswipe-root-el.html')
 	var pswpInit = resolve('photoswipe-init.html')
@@ -22,8 +23,22 @@ exports.get = function(req) {
 		// showHideOpacity: true,
 		// getThumbBoundsFn: false,
 	};
+	// var displayHeader = true;
+	// 
+	var colModel = {
+		"1": "col-xs-12",
+		"2": "col-xs-6",
+		"3": "col-xs-6 col-sm-4 col-md-3",
+		"4": "col-xs-6 col-sm-3",
+		"6": "col-xs-6 col-sm-3 col-md-2",
+		"12": "col-xs-6 col-sm-3 col-md-2 col-lg-1",
+	}
+
+	var cols = colModel[config.columns];
 
 	var model = {
+		config: config,
+		cols: cols,
 		name: gallery.displayName,
 		tags: data.tags,
 		images: images,
@@ -32,6 +47,8 @@ exports.get = function(req) {
 	};
 	var assets = libs.thymeleaf.render(pswpAssets, {});
 	var rootEl = libs.thymeleaf.render(pswpRootEl, {});
+	var styleEl = libs.thymeleaf.render(style, {});
+	// var rootEl = libs.thymeleaf.render(pswpRootEl, {});
 	// var init = libs.thymeleaf.render(pswpInit, {});
 	var body = libs.thymeleaf.render(view, model);
 	return {
@@ -41,6 +58,7 @@ exports.get = function(req) {
 			"bodyEnd": [
 			rootEl,
 			assets,
+			styleEl,
 			]
 		}
 	}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Image shape</display-name>
+	<items>
+		<option-set name="dimensions">
+			<label>Image dimensions</label>
+			<expanded>false</expanded>
+			<occurrences minimum="1" maximum="1"/>
+			<help-text>Crop images to this shape</help-text>
+			<options minimum="1" maximum="1">
+				<option name="original">
+					<label>Original</label>
+					<help-text>Do not crop images</help-text>
+					<default>true</default>
+				</option>
+				<option name="square">
+					<label>Square</label>
+					<help-text>Crop to square shaped images</help-text>
+				</option>
+				<option name="user">
+					<label>User defined</label>
+					<help-text>Define your own dimensions</help-text>
+					<items>
+						<input name="dimension" type="TextLine">
+							<label>W:H</label>
+							<help-text>16:9</help-text>
+							<occurrences minimum="0" maximum="1"/>
+							<config>
+								<regexp>^\d+\:\d+$</regexp>
+							</config>
+						</input>
+					</items>
+				</option>
+			</options>
+		</option-set>
+	</items>
+</mixin>

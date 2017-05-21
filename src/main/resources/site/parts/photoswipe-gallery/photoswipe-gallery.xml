@@ -5,13 +5,40 @@
 		<field-set name="gallery">
 			<label>Gallery</label>
 			<items>
+				<input name="columns" type="RadioButton">
+					<label>Columns</label>
+					<occurrences minimum="0" maximum="0"/>
+					<config>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="6">6</option>
+						<option value="12">12</option>
+					</config>
+					<default>4</default>
+				</input>
 				<input name="gallery" type="ContentSelector">
 					<label>Select gallery</label>
 					<help-text>Select gallery to display</help-text>
-					<occurrences minimum="1" maximum="1"/>
+					<occurrences minimum="0" maximum="1"/>
 					<config>
 						<relationshipType>system:reference</relationshipType>
 						<allowContentType>gallery</allowContentType>
+						<allowPath>${site}/</allowPath>
+				  </config>
+				</input>
+				<input name="displayHeader" type="CheckBox">
+					<label>Display gallery name</label>
+					<occurrences minimum="0" maximum="1"/>
+				</input>
+				<input name="style" type="ContentSelector">
+					<label>Gallery style</label>
+					<help-text></help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<config>
+						<relationshipType>system:reference</relationshipType>
+						<allowContentType>look</allowContentType>
 						<allowPath>${site}/</allowPath>
 				  </config>
 				</input>

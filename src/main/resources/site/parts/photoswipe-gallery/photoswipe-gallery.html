@@ -1,21 +1,5 @@
-<style>
-	.vertical-align {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  /* justify-content: center; */
-  /* background: red; */
-	}
-	.pswp-gallery-wrapper-style {
-	background-color: rgba(0, 0, 0, 0.49);
-  border-radius: 0.3em;
-  padding: 15px;
-  margin-bottom: 15px;
-  color: #fff;
-	}
-</style>
 <div class="pswp-gallery-wrapper">
-	<header>
+	<header data-th-if="${config.displayHeader}">
 		<h1 data-th-text="${name}">
 		Gallery
 		</h1>
@@ -27,7 +11,7 @@
 		itemtype="http://schema.org/ImageGallery"
 		>
 		<figure
-			class="col-xs-6 col-sm-4 col-md-3"
+			data-th-class="${cols}"
 			data-th-each="image, index : ${images}"
 			itemprop="associatedMedia"
 			itemscope=""

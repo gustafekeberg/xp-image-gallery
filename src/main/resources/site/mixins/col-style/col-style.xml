@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Column style</display-name>
+	<items>
+		<input name="col" type="RadioButton">
+			<label>Columns</label>
+			<occurrences minimum="0" maximum="1"/>
+			<config>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="6">6</option>
+				<option value="12">12</option>
+			</config>
+			<default>1</default>
+		</input>
+	</items>
+</mixin>
