@@ -11,11 +11,11 @@ exports.get = function(req) {
 	var gallery = libs.content.get({key: config.gallery});
 	var data = gallery.data;
 
-	var view = resolve('photoswipe-gallery.html');
-	var style = resolve('photoswipe-style.html');
-	var pswpAssets = resolve('photoswipe-assets.html');
-	var pswpRootEl = resolve('photoswipe-root-el.html')
-	var pswpInit = resolve('photoswipe-init.html')
+	var view = resolve('gallery.html');
+	var style = resolve('style.html');
+	var pswpAssets = resolve('assets.html');
+	var pswpRootEl = resolve('root-el.html');
+	// var pswpInit = resolve('init.html')
 	var images = collectImageData(data.images);
 	var userSettings = {
 		// showAnimationDuration: 0,
@@ -25,14 +25,14 @@ exports.get = function(req) {
 	};
 	// var displayHeader = true;
 	// 
-	var colModel = {
-		"1": "col-xs-12",
-		"2": "col-xs-6",
-		"3": "col-xs-6 col-sm-4 col-md-3",
-		"4": "col-xs-6 col-sm-3",
-		"6": "col-xs-6 col-sm-3 col-md-2",
-		"12": "col-xs-6 col-sm-3 col-md-2 col-lg-1",
-	}
+	var colSize = {
+		"1": "12",
+		"2": "6",
+		"3": "4",
+		"4": "3",
+		"6": "2",
+		"12": "1",
+	};
 
 	var cols = colModel[config.columns];
 

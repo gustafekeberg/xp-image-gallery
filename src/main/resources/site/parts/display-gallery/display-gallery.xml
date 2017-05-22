@@ -15,10 +15,6 @@
 						<allowPath>${site}/</allowPath>
 				  </config>
 				</input>
-				<input name="displayHeader" type="CheckBox">
-					<label>Display gallery name</label>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
 				<input name="style" type="ContentSelector">
 					<label>Gallery style</label>
 					<help-text></help-text>
@@ -28,6 +24,10 @@
 						<allowContentType>look</allowContentType>
 						<allowPath>${site}/</allowPath>
 				  </config>
+				</input>
+				<input name="displayHeader" type="CheckBox">
+					<label>Display gallery name</label>
+					<occurrences minimum="0" maximum="1"/>
 				</input>
 			</items>
 		</field-set>

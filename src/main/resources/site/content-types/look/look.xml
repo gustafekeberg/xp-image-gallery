@@ -14,7 +14,7 @@
 					<label>Column style</label>
 					<expanded>false</expanded>
 					<occurrences minimum="1" maximum="1"/>
-					<options minimum="1" maximum="4">
+					<options minimum="0" maximum="4">
 						<option name="xs">
 							<label>Extra small screen</label>
 							<items>
