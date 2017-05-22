@@ -26,10 +26,10 @@ exports.get = function(req) {
 	// var displayHeader = true;
 	// 
 	// 
-	var galleryStyle = config.style ? libs.content.get({key: config.style}) : undefined;
+	var galleryStyle = config.grid ? libs.content.get({key: config.grid}) : undefined;
 	var galleryStyleData = (galleryStyle ? galleryStyle.data : undefined);
 	var colSetup = getColsetup(galleryStyleData);
-
+	libs.util.log(colSetup);
 
 	var model = {
 		config: config,
@@ -38,8 +38,11 @@ exports.get = function(req) {
 		tags: data.tags,
 		images: images,
 		data: data,
-		userSettings: JSON.stringify(userSettings)
+		userSettings: JSON.stringify(userSettings),
+		displayFigcaptions: config.displayFigcaptions,
+		verticalAlign: config.verticalAlign,
 	};
+
 	var assets = libs.thymeleaf.render(pswpAssets, {});
 	var rootEl = libs.thymeleaf.render(pswpRootEl, {});
 	var styleEl = libs.thymeleaf.render(style, {});
@@ -65,7 +68,6 @@ exports.post = function(req) {
 
 function getColsetup (config) {
 	var defaultSetup = "col-xs-12";
-	libs.util.log(config);
 	var setup = "";
 	if (!config || !config.columnStyle)
 		return defaultSetup;

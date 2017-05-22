@@ -1,41 +1,41 @@
 <div class="pswp-gallery-wrapper">
 	<header data-th-if="${config.displayHeader}">
 		<h1 data-th-text="${name}">
-		Gallery
+			Gallery
 		</h1>
 	</header>
 	<div
-		class="pswp-gallery-container image-container row clearfix  vertical-align"
-		data-th-attr="user-settings=${userSettings}"
-		itemscope=""
-		itemtype="http://schema.org/ImageGallery"
-		>
-		<figure
-			data-th-class="${cols}"
-			data-th-each="image, index : ${images}"
-			itemprop="associatedMedia"
-			itemscope=""
-			itemtype="http://schema.org/ImageObject"
-			>
-			<a
-				data-th-attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
-				data-th-href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
-				itemprop="contentUrl"
-				>
-				<img
-				class="img-responsive img-rounded"
-				data-th-src="${portal.imageUrl({ '_id=' + image.id, '_scale=max(768)'})}"
-				/>
-				<figcaption class="sr-only">
-				<strong data-th-text="${image.title}" />
-				<div data-th-remove="${(image.caption == '') ? 'all' : 'tag'}">
-					<br /><em data-th-text="${image.caption}" />
-				</div>
-				<div data-th-remove="${(image.artist == '') ? 'all' : 'tag'}">
-					<br /><span data-th-text="${'Foto: ' + image.artist}"/>
-					</div>
-					</figcaption>
-				</a><br/>
-			</figure>
+	data-th-class="'pswp-gallery-container image-container row clearfix' + ${verticalAlign ? ' vertical-align' : ''}"
+	data-th-attr="user-settings=${userSettings}"
+	itemscope=""
+	itemtype="http://schema.org/ImageGallery"
+	>
+	<figure
+	data-th-class="${cols + ''}"
+	data-th-each="image, index : ${images}"
+	itemprop="associatedMedia"
+	itemscope=""
+	itemtype="http://schema.org/ImageObject"
+	>
+	<a
+	data-th-attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
+	data-th-href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
+	itemprop="contentUrl"
+	>
+	<img
+	class="img-responsive img-rounded"
+	data-th-src="${portal.imageUrl({ '_id=' + image.id, '_scale=max(768)'})}"
+	/>
+	<figcaption data-th-class="${displayFigcaptions ? '' : 'sr-only'}">
+		<strong data-th-text="${image.title}" />
+		<div data-th-remove="${(image.caption == '') ? 'all' : 'tag'}">
+			<br /><em data-th-text="${image.caption}" />
 		</div>
-	</div>
+		<div data-th-remove="${(image.artist == '') ? 'all' : 'tag'}">
+			<br /><span data-th-text="${'Foto: ' + image.artist}"/>
+		</div>
+	</figcaption>
+</a>
+</figure>
+</div>
+</div>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Photoswipe - config</display-name>
+	<items>
+		<input name="caption" type="CheckBox">
+			<label>Show image caption</label>
+			<help-text></help-text>	
+			<occurrences minimum="0" maximum="1"/>
+			<default>checked</default>
+		</input>
+		<input name="share" type="CheckBox">
+			<label>Share buttons</label>
+			<help-text></help-text>	
+			<occurrences minimum="0" maximum="1"/>
+			<default>checked</default>
+		</input>
+
+	</items>
+</mixin>
