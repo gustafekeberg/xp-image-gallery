@@ -25,20 +25,15 @@ exports.get = function(req) {
 	};
 	// var displayHeader = true;
 	// 
-	var colSize = {
-		"1": "12",
-		"2": "6",
-		"3": "4",
-		"4": "3",
-		"6": "2",
-		"12": "1",
-	};
+	// 
+	var galleryStyle = config.style ? libs.content.get({key: config.style}) : undefined;
+	var galleryStyleData = (galleryStyle ? galleryStyle.data : undefined);
+	var colSetup = getColsetup(galleryStyleData);
 
-	var cols = colModel[config.columns];
 
 	var model = {
 		config: config,
-		cols: cols,
+		cols: colSetup,
 		name: gallery.displayName,
 		tags: data.tags,
 		images: images,
@@ -61,11 +56,27 @@ exports.get = function(req) {
 			styleEl,
 			]
 		}
-	}
-}
+	};
+};
 
 exports.post = function(req) {
 	return req;
+};
+
+function getColsetup (config) {
+	var defaultSetup = "col-xs-12";
+	libs.util.log(config);
+	var setup = "";
+	if (!config || !config.columnStyle)
+		return defaultSetup;
+	var colStyle = config.columnStyle;
+	var selected = libs.util.data.forceArray(colStyle._selected);
+	for ( var i = 0, len = selected.length; i < len; i ++ )
+	{
+		var key = selected[i];
+		setup += key + "-" +  colStyle[key].col + " ";
+	}
+	return setup;
 }
 
 function collectImageData (list) {
@@ -86,7 +97,7 @@ function collectImageData (list) {
 			// data: data,
 			// media: media,
 			dimensions: [imageInfo.imageWidth, imageInfo.imageHeight],
-		}
+		};
 		array.push(imageData);
 	}
 	return array;
