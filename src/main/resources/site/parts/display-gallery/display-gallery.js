@@ -23,7 +23,7 @@ exports.get = function(req) {
 	var data = selectedGallery.data;
 
 	var view = resolve('gallery.html');
-	var style = resolve('style.html');
+	var addStyle = resolve('style.html');
 	var pswpAssets = resolve('assets.html');
 	var pswpRootEl = resolve('root-el.html');
  
@@ -55,9 +55,11 @@ exports.get = function(req) {
 		// bgOpacity: 0.5,
 	};
 
-	var galleryStyle = config.look || siteConfig.look;
+	var look = config.look || siteConfig.look;
+	var style = libs.content.get({key:look});
+	var styleData = style.data;
 
-	libs.util.log(config);
+	libs.util.log(styleData);
 	// var galleryStyle = config.grid ? libs.content.get({
 	// 	key: config.grid
 	// }) : undefined;
@@ -80,7 +82,7 @@ exports.get = function(req) {
 
 	var assets = libs.thymeleaf.render(pswpAssets, {});
 	var rootEl = libs.thymeleaf.render(pswpRootEl, {});
-	var styleEl = libs.thymeleaf.render(style, {});
+	var styleEl = libs.thymeleaf.render(addStyle, {});
 	// var rootEl = libs.thymeleaf.render(pswpRootEl, {});
 	// var init = libs.thymeleaf.render(pswpInit, {});
 	var body = libs.thymeleaf.render(view, model);
