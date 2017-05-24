@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Thumbnail size</display-name>
+	<items>
+		<input name="size" type="RadioButton">
+			<label>Size</label>
+			<occurrences minimum="0" maximum="0"/>
+			<config>
+				<option value="small">Small</option>
+				<option value="medium">Medium</option>
+				<option value="large">Large</option>
+				<option value="custom">Custom</option>
+			</config>
+			<default>small</default>
+		</input>
+		<input name="customValue" type="TextLine">
+			<label>Custom width (px)</label>
+			<help-text>Enter custom width in pixels.</help-text>
+			<occurrences minimum="0" maximum="1"/>
+			<config>
+				<regexp>^\d+$</regexp>
+			</config>
+		</input>
+	</items>
+</mixin>

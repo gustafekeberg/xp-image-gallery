@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Thumbnail captions</display-name>
+	<items>
+		<option-set name="captions">
+			<label>Captions</label>
+			<expanded>false</expanded>
+			<occurrences minimum="1" maximum="1"/>
+			<help-text>Configure figcaptions for thumbnails and fullscreen images.</help-text>
+			<options minimum="0" maximum="2">
+				<option name="include">
+					<label>Include in caption</label>
+					<help-text>What to include in figcaption</help-text>
+					<items>
+						<inline mixin="figcaption-content"/>
+					</items>
+				</option>
+				<option name="hide">
+					<label>Hide from thumbnails</label>
+					<help-text>Elements selected here will be hidden in figcaptions below thumbnail but can be rendered in viewer.</help-text>
+					<items>
+						<inline mixin="figcaption-content"/>
+					</items>
+				</option>
+			</options>
+		</option-set>
+	</items>
+</mixin>

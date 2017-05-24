@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Grid setup</display-name>
+	<items>
+		<option-set name="columns">
+					<label>Column settings</label>
+					<expanded>false</expanded>
+					<occurrences minimum="0" maximum="1"/>
+					<options minimum="0" maximum="4">
+						<option name="col-xs">
+							<label>Extra small screen</label>
+							<items>
+								<inline mixin="col-style"/>
+							</items>
+						</option>
+						<option name="col-sm">
+							<label>Small screen</label>
+							<items>
+								<inline mixin="col-style"/>
+							</items>
+						</option>
+						<option name="col-md">
+							<label>Medium screen</label>
+							<items>
+								<inline mixin="col-style"/>
+							</items>
+						</option>
+						<option name="col-lg">
+							<label>Large screen</label>
+							<items>
+								<inline mixin="col-style"/>
+							</items>
+						</option>
+					</options>
+				</option-set>
+	</items>
+</mixin>

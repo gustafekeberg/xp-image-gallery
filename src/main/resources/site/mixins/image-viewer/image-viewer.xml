@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Image viewer settings</display-name>
+	<items>
+		<option-set name="viewer">
+			<label>Image viewer settings</label>
+			<expanded>false</expanded>
+			<occurrences minimum="0" maximum="1"/>
+			<help-text>Configure the image viewer to be used</help-text>
+			<options minimum="1" maximum="1">
+				<option name="pswp">
+					<label>Photoswipe</label>
+					<default>true</default>
+					<help-text>A Photoswipe gallery will render when a thumbnail is clicked.</help-text>
+					<items>
+						<inline mixin="pswp-config"/>
+					</items>
+				</option>
+		<!-- <option name="lightbox">
+			<label>Lightbox</label>
+		</option> -->
+	</options>
+</option-set>
+</items>
+</mixin>

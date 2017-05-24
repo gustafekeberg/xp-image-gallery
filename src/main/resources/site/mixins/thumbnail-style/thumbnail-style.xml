@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Thumbnail style</display-name>
+	<items>
+		<input name="shape" type="RadioButton">
+							<label>Shape</label>
+							<help-text></help-text>
+							<occurrences minimum="0" maximum="0"/>
+							<config>
+								<option value="img-original">Original</option>
+								<option value="img-circle">Circle</option>
+								<option value="img-rounded">Rounded</option>
+								<option value="img-thumbnail">Thumbnail</option>
+								<!-- <option value="instant">Instant</option> -->
+							</config>
+							<default>img-original</default>
+						</input>
+						<input name="vAlign" type="CheckBox">
+							<label>Center thumbnails vertically</label>
+							<occurrences minimum="0" maximum="1"/>
+						</input>
+	</items>
+</mixin>

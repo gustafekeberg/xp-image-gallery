@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-  <config/>
+  <config>
+  	<field-set name="defaults">
+  		<label>Default settings</label>
+  		<help-text>Default settings will be applied to all galleries if not overridden when setting up gallery.</help-text>
+  		<items>
+				<input name="look" type="ContentSelector">
+					<label>Select a style</label>
+					<help-text>Select a default style</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<config>
+						<relationshipType>system:reference</relationshipType>
+						<allowContentType>gallery-look</allowContentType>
+						<allowPath>${site}/</allowPath>
+					</config>
+				</input>
+  		</items>
+  	</field-set>
+  </config>
 </site>

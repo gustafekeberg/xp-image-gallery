@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Thumbnail settings</display-name>
+	<items>
+		<option-set name="thumbnails">
+			<label>Thumbnail settings</label>
+			<expanded>false</expanded>
+			<occurrences minimum="0" maximum="1"/>
+			<help-text>Settings for the thumbnails.</help-text>
+			<options minimum="0" maximum="100">
+				<option name="click">
+					<label>Clicked</label>
+					<items>
+						<inline mixin="thumbnail-click"/>
+					</items>
+				</option>
+				<option name="captions">
+					<label>Captions</label>
+					<items>
+						<inline mixin="thumbnail-captions"/>
+					</items>
+				</option>
+				<option name="shape">
+					<label>Shape</label>
+					<items>
+						<inline mixin="thumbnail-shape"/>
+					</items>
+				</option>
+				<option name="style">
+					<label>Style</label>
+					<items>
+						<inline mixin="thumbnail-style"/>
+					</items>
+				</option>
+				<option name="size">
+					<label>Size</label>
+					<items>
+						<inline mixin="thumbnail-size"/>
+					</items>
+				</option>
+			</options>
+		</option-set>
+	</items>
+</mixin>

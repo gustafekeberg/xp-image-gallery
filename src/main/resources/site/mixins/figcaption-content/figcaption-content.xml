@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Figcaption content</display-name>
+	<items>
+		<input name="title" type="CheckBox">
+			<label>Title</label>
+			<occurrences minimum="0" maximum="1"/>
+			<default>checked</default>
+		</input>
+		<input name="artist" type="CheckBox">
+			<label>Artist</label>
+			<occurrences minimum="0" maximum="1"/>
+		</input>
+		<input name="copyright" type="CheckBox">
+			<label>Copyright</label>
+			<occurrences minimum="0" maximum="1"/>
+		</input>
+		<input name="artistPreText" type="TextLine">
+			<label>Artist-pre text</label>
+			<help-text>Text preceeding the artist: &#39;Photo by:&#39;</help-text>
+			<occurrences minimum="0" maximum="1"/>
+			<config/>
+			<default>Artist:</default>
+		</input>
+		<item-set name="defaultText">
+			<label>Default texts</label>
+			<help-text>Set default texts for all images</help-text>
+			<occurrences minimum="0" maximum="1"/>
+			<items>
+				<input name="artistText" type="TextLine">
+					<label>Artist</label>
+					<help-text>Replace artist with this text.</help-text>
+					<occurrences minimum="0" maximum="1"/>
+				</input>
+				<input name="copyrightText" type="TextLine">
+					<label>Copyright</label>
+					<help-text>Enter copyright notice to be used for all images.</help-text>
+					<occurrences minimum="0" maximum="1"/>
+				</input>
+			</items>
+		</item-set>
+	</items>
+</mixin>

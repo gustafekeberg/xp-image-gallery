@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+<display-name>Thumbnail click</display-name>
+<items>
+	<input name="action" type="RadioButton">
+		<label>Click action</label>
+		<help-text>What will happen when a thumbnail is clicked</help-text>
+		<occurrences minimum="0" maximum="0"/>
+		<config>
+			<option value="image">Open image</option>
+			<option value="viewer">Open viewer</option>
+			<option value="none">Do nothing</option>
+		</config>
+		<default>image</default>
+	</input>
+</items>
+</mixin>

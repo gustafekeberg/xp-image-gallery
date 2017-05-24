@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Look setup</display-name>
+	<items>
+		<!-- <input name="displayHeader" type="CheckBox">
+			<label>Display gallery name</label>
+			<occurrences minimum="0" maximum="1"/>
+		</input>	 -->
+		
+			<field-set name="grid">
+			<label>Grid setup</label>
+			<help-text></help-text>
+			<items>
+				<inline mixin="grid-setup"/>
+			</items>
+		</field-set>
+		<field-set name="thumbs">
+			<label>Thumbnail setup</label>
+			<help-text></help-text>
+			<items>	
+				<inline mixin="thumbnail-settings"/>
+			</items>
+		</field-set>
+		<field-set name="viewer">
+			<label>Image viewer</label>
+			<help-text></help-text>
+			<items>	
+				<inline mixin="image-viewer"/>
+			</items>
+		</field-set>
+	</items>
+</mixin>

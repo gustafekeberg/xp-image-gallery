@@ -3,11 +3,11 @@
 	<display-name>Display gallery</display-name>
 	<config>
 		<field-set name="gallery">
-			<label>Gallery setup</label>
+			<label>Gallery</label>
 			<items>
 				<input name="gallery" type="ContentSelector">
-					<label>Select gallery</label>
-					<help-text>Select gallery to display</help-text>
+					<label>Select a gallery</label>
+					<help-text>Select a gallery to display</help-text>
 					<occurrences minimum="0" maximum="1"/>
 					<config>
 						<relationshipType>system:reference</relationshipType>
@@ -15,105 +15,20 @@
 						<allowPath>${site}/</allowPath>
 					</config>
 				</input>
-				
-				<input name="grid" type="ContentSelector">
-					<label>Select grid setup</label>
-					<help-text>Select grid setup for thumbnails</help-text>
+				<input name="look" type="ContentSelector">
+					<label>Select a style</label>
+					<help-text>Select a style for this gallery</help-text>
 					<occurrences minimum="0" maximum="1"/>
 					<config>
 						<relationshipType>system:reference</relationshipType>
-						<allowContentType>look</allowContentType>
+						<allowContentType>gallery-look</allowContentType>
 						<allowPath>${site}/</allowPath>
 					</config>
 				</input>
-				<option-set name="fullscreen">
-					<label>Fullscreen view</label>
-					<expanded>false</expanded>
-					<occurrences minimum="1" maximum="1"/>
-					<help-text></help-text>
-					<options minimum="0" maximum="1">
-						<option name="default">
-							<label>Default</label>
-							<default>true</default>
-							<help-text></help-text>
-						</option>
-						<option name="pswp">
-							<label>Photoswipe</label>
-							<default></default>
-							<help-text></help-text>
-							<items>
-								<inline mixin="pswp-config"/>
-							</items>
-						</option>
-						<option name="lightbox">
-							<label>Lightbox</label>
-						</option>
-						<option name="image">
-							<label>Link to image</label>
-							<help-text></help-text>
-						</option>
-					</options>
-				</option-set>
-				<option-set name="captions">
-					<label>Captions</label>
-					<expanded>false</expanded>
-					<occurrences minimum="1" maximum="1"/>
-					<help-text>Configure figcaptions for thumbnails and fullscreen images.</help-text>
-					<options minimum="1" maximum="2">
-						
-						<option name="defaults">
-							<label>Override defaults</label>
-							<items>
-								<input name="title" type="CheckBox">
-									<label>Include title</label>
-									<occurrences minimum="0" maximum="1"/>
-									<default>checked</default>
-								</input>
-								<input name="artist" type="CheckBox">
-									<label>Include artist</label>
-									<occurrences minimum="0" maximum="1"/>
-									<default>checked</default>
-								</input>
-								<input name="copyright" type="CheckBox">
-									<label>Include copyright</label>
-									<occurrences minimum="0" maximum="1"/>
-									<default>checked</default>
-								</input>
-							</items>
-						</option>
-						<option name="thumbnails">
-							<label>Thumbnails</label>
-							<items>
-								<input name="title" type="CheckBox">
-									<label>Show title</label>
-									<occurrences minimum="0" maximum="1"/>
-									<default>checked</default>
-								</input>
-								<input name="artist" type="CheckBox">
-									<label>Show artist</label>
-									<occurrences minimum="0" maximum="1"/>
-									<default></default>
-								</input>
-							</items>
-						</option>
-					</options>
-				</option-set>
-				<input name="displayFigcaptions" type="CheckBox">
-					<label>Figcaptions below thumbnails?</label>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
-
-				<input name="verticalAlign" type="CheckBox">
-					<label>Center images vertically</label>
-					<occurrences minimum="0" maximum="1"/>
-					<default>checked</default>
-				</input>
-
-				<input name="displayHeader" type="CheckBox">
-					<label>Display gallery name</label>
-					<occurrences minimum="0" maximum="1"/>
-				</input>
+				
+				<inline mixin="look-setup"/>
 			</items>
+
 		</field-set>
 	</config>
 </part>
