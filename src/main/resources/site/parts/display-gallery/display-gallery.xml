@@ -26,7 +26,14 @@
 					</config>
 				</input>
 				
-				<inline mixin="look-setup"/>
+				<item-set name="settingsOverride">
+					<label>Override defaults</label>
+					<help-text>Override default settings settings. Default settings is set in app config.</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<items>
+						<inline mixin="look-setup"/>
+					</items>
+				</item-set>
 			</items>
 
 		</field-set>

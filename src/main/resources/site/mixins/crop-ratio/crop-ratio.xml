@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Image shape</display-name>
+	<items>
+		<input name="dimensions" type="RadioButton">
+			<label>W:H ratio (Width:Height)</label>
+			<help-text></help-text>
+			<occurrences minimum="1" maximum="0"/>
+			<config>
+				<option value="original">Original</option>
+				<option value="1:1">Ratio (1:1)</option>
+				<option value="2:1">Ratio (2:1)</option>
+				<option value="3:2">Ratio (3:2)</option>
+				<option value="5:4">Ratio (5:4)</option>
+				<option value="custom">Custom</option>
+			</config>
+			<default>original</default>
+		</input>
+		<input name="dimension" type="TextLine">
+			<label>W:H</label>
+			<help-text>Width and height ratio: &#39;16:9&#39;</help-text>
+			<occurrences minimum="0" maximum="1"/>
+			<config>
+				<regexp>^\d+\:\d+$</regexp>
+			</config>
+		</input>
+	</items>
+</mixin>

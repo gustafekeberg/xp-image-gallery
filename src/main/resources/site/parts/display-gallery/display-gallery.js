@@ -9,18 +9,18 @@ exports.get = function(req) {
 	var component = libs.portal.getComponent();
 	var content = libs.portal.getContent();
 	var config = component.config;
-	var selectedGallery = config.gallery;
+	var siteConfig = libs.portal.getSiteConfig();
 
 	// get selected gallery or try this location if no gallery is selected
-	var gallery = selectedGallery ? libs.content.get({key: selectedGallery}) : libs.content.get({key: content._id});
-	if (gallery.type !== app.name + ":gallery")
+	var selectedGallery = config.gallery ? libs.content.get({key: config.gallery}) : libs.content.get({key: content._id});
+	if (selectedGallery.type !== app.name + ":gallery")
 	{
 		var notFound = "<div><p><strong>Gallery not found!</strong></p><p>Please check your settings!</p></div>";	
 		return {
 			body: notFound,
 		};
 	}
-	var data = gallery.data;
+	var data = selectedGallery.data;
 
 	var view = resolve('gallery.html');
 	var style = resolve('style.html');
@@ -55,17 +55,21 @@ exports.get = function(req) {
 		// bgOpacity: 0.5,
 	};
 
-	var galleryStyle = config.grid ? libs.content.get({
-		key: config.grid
-	}) : undefined;
-	var galleryStyleData = (galleryStyle ? galleryStyle.data : undefined);
-	var colSetup = getColsetup(galleryStyleData);
+	var galleryStyle = config.look || siteConfig.look;
+
+	libs.util.log(config);
+	// var galleryStyle = config.grid ? libs.content.get({
+	// 	key: config.grid
+	// }) : undefined;
+	// var galleryStyleData = (galleryStyle ? galleryStyle.data : undefined);
+	// var colSetup = getColsetup(galleryStyleData);
+	var colSetup = "col-xs-12";
 	// libs.util.log(colSetup);
 
 	var model = {
 		config: config,
 		cols: colSetup,
-		name: gallery.displayName,
+		name: selectedGallery.displayName,
 		tags: data.tags,
 		images: images,
 		data: data,
