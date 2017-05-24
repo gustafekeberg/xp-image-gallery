@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <content-type>
-	<display-name>Gallery look settings</display-name>
+	<display-name>Gallery design</display-name>
 	<super-type>base:structured</super-type>
 	<is-abstract>false</is-abstract>
 	<is-final>true</is-final>
 	<allow-child-content>true</allow-child-content>
 	<form>
-		<inline mixin="look-setup"/>
+		<inline mixin="design-setup"/>
 	</form>
 </content-type>

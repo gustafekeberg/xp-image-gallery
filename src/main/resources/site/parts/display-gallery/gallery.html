@@ -5,13 +5,13 @@
 		</h1>
 	</header>
 	<div
-	data-th-class="'pswp-gallery-container image-container row clearfix' + ${verticalAlign ? ' vertical-align' : ''}"
+	data-th-class="'pswp-gallery-container image-container row clearfix' + ${style.vAlign ? ' vertical-align' : ''}"
 	data-th-attr="user-settings=${userSettings}"
 	itemscope=""
 	itemtype="http://schema.org/ImageGallery"
 	>
 	<figure
-	data-th-class="${cols + ''}"
+	data-th-class="${style.cols + ''}"
 	data-th-each="image, index : ${images}"
 	itemprop="associatedMedia"
 	itemscope=""

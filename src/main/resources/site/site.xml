@@ -5,13 +5,13 @@
   		<label>Default settings</label>
   		<help-text>Default settings will be applied to all galleries if not overridden when setting up gallery.</help-text>
   		<items>
-				<input name="look" type="ContentSelector">
+				<input name="design" type="ContentSelector">
 					<label>Select a style</label>
 					<help-text>Select a default style</help-text>
 					<occurrences minimum="0" maximum="1"/>
 					<config>
 						<relationshipType>system:reference</relationshipType>
-						<allowContentType>gallery-look</allowContentType>
+						<allowContentType>gallery-design</allowContentType>
 						<allowPath>${site}/</allowPath>
 					</config>
 				</input>
