@@ -18,11 +18,11 @@ exports.get = function(req) {
 	var siteConfig = libs.portal.getSiteConfig();
 
 	// get selected gallery or try this location if no gallery is selected
-	var selectedGallery = config.gallery ? libs.content.get({
-		key: config.gallery
-	}) : libs.content.get({
-		key: content._id
-	});
+	var selectedGallery =
+	config.gallery ?
+	libs.content.get({ key: config.gallery }) :
+	libs.content.get({ key: content._id });
+
 	if (selectedGallery.type !== app.name + ":gallery") {
 		var notFound = "<div><p><strong>Gallery not found!</strong></p><p>Please check your settings!</p></div>";
 		return {
@@ -44,9 +44,8 @@ exports.get = function(req) {
 	var styleConf = style ? style.data : undefined;
 
 	// libs.util.log(styleConf.columns._selected instanceof Array);
-	libs.util.log("== styleConf ==");
-	libs.util.log(styleConf);
-	var styleModel = makeStyleModel(styleConf);
+	libs.util.log("styleConf: " + design);
+	var styleModel = prepareStyle(styleConf);
 	var userSettings = {};
 
 	var model = {
@@ -70,9 +69,9 @@ exports.get = function(req) {
 		contentType: 'text/html',
 		pageContributions: {
 			"bodyEnd": [
-				rootEl,
-				assets,
-				styleEl,
+			rootEl,
+			assets,
+			styleEl,
 			]
 		}
 	};
@@ -82,14 +81,63 @@ exports.post = function(req) {
 	return req;
 };
 
-function makeStyleModel(styleConf) {
+function prepareStyle(styleConf) {
 
-	var styleModel = {
+	function combineStyles (defaultStyle, customStyle) {
+		var combined = defaultStyle;
+		for (var key in customStyle)
+		{
+			combined[key] = customStyle[key];
+		}
+		return combined;
+	}
+
+	var defaultStyle = {
+		grid: "bootstrap3",
 		cols: "col-xs-12",
-		vAlign: false,
+		thumbnails: thumbnailsDefaultSettings(),
+		viewer: {},
 	};
-	styleModel.vAlign = true;
-	return styleModel;
+	var combinedStyle = combineStyles(defaultStyle, styleConf);
+	libs.util.log(combinedStyle);
+	// styleModel.vAlign = true;
+	return combinedStyle;
+}
+
+function thumbnailsDefaultSettings () {
+	return {
+		"_selected": [
+		"click",
+		"captions",
+		"shape",
+		"style",
+		"size"
+		],
+		"click": {
+			"action": "image"
+		},
+		"captions": {
+			"captions": {
+				"_selected": "include",
+				"include": {
+					"title": true,
+					"artist": false,
+					"copyright": false,
+					"artistPreText": "Artist:"
+				}
+			}
+		},
+		"shape": {
+			"dimensions": "original"
+		},
+		"style": {
+			"shape": "img-original",
+			"vAlign": false
+		},
+		"size": {
+			"size": "small"
+		}
+	};
 }
 
 function PSWPUserSettings (json) {

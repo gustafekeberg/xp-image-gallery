@@ -15,6 +15,16 @@
 						<allowPath>${site}/</allowPath>
 					</config>
 				</input>
+	  		<input name="grid" type="RadioButton">
+	  			<label>Grid framework</label>
+	  			<help-text>Select the grid framework that is used on your site.</help-text>
+	  			<occurrences minimum="1" maximum="1"/>
+	  			<config>
+	  				<option value="bootstrap3">Bootstrap 3</option>
+	  				<!-- <option value="none">None</option> -->
+	  			</config>
+	  			<default>bootstrap3</default>
+	  		</input>
   		</items>
   	</field-set>
   </config>

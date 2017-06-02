@@ -11,6 +11,7 @@
 				<option name="include">
 					<label>Include in caption</label>
 					<help-text>What to include in figcaption</help-text>
+					<default>true</default>
 					<items>
 						<inline mixin="figcaption-content"/>
 						<input name="artistPreText" type="TextLine">

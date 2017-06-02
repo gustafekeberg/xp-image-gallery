@@ -5,6 +5,7 @@
 		<input name="title" type="CheckBox">
 			<label>Title</label>
 			<occurrences minimum="0" maximum="1"/>
+			<default>checked</default>
 		</input>
 		<input name="artist" type="CheckBox">
 			<label>Artist</label>

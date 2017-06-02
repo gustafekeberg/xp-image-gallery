@@ -10,30 +10,35 @@
 			<options minimum="0" maximum="100">
 				<option name="click">
 					<label>Clicked</label>
+					<default>true</default>
 					<items>
 						<inline mixin="thumbnail-click"/>
 					</items>
 				</option>
 				<option name="captions">
 					<label>Captions</label>
+					<default>true</default>
 					<items>
 						<inline mixin="thumbnail-captions"/>
 					</items>
 				</option>
 				<option name="shape">
 					<label>Shape</label>
+					<default>true</default>
 					<items>
 						<inline mixin="thumbnail-shape"/>
 					</items>
 				</option>
 				<option name="style">
 					<label>Style</label>
+					<default>true</default>
 					<items>
 						<inline mixin="thumbnail-style"/>
 					</items>
 				</option>
 				<option name="size">
 					<label>Size</label>
+					<default>true</default>
 					<items>
 						<inline mixin="thumbnail-size"/>
 					</items>

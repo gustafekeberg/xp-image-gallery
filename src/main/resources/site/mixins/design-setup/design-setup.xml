@@ -2,16 +2,27 @@
 <mixin>
 	<display-name>Look setup</display-name>
 	<items>
-		<!-- <input name="displayHeader" type="CheckBox">
-			<label>Display gallery name</label>
-			<occurrences minimum="0" maximum="1"/>
-		</input>	 -->
-		
-			<field-set name="grid">
+		<field-set name="grid">
 			<label>Grid setup</label>
 			<help-text></help-text>
 			<items>
 				<inline mixin="grid-setup"/>
+				<item-set name="css">
+					<label>Custom CSS-classes</label>
+					<help-text>Apply custom CSS-classes to your thumbnails</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<items>
+						<input name="class" type="TextLine">
+							<label>CSS-class</label>
+							<help-text>Enter custom CSS-classes.</help-text>
+							<occurrences minimum="1" maximum="1"/>
+							<config>
+								<regexp>^[\s_a-zA-Z0-9-]*$</regexp>
+							</config>
+							<default/>
+						</input>
+					</items>
+				</item-set>
 			</items>
 		</field-set>
 		<field-set name="thumbs">

@@ -15,13 +15,13 @@
 						<allowPath>${site}/</allowPath>
 					</config>
 				</input>
-				<input name="look" type="ContentSelector">
+				<input name="design" type="ContentSelector">
 					<label>Select a style</label>
 					<help-text>Select a style for this gallery</help-text>
 					<occurrences minimum="0" maximum="1"/>
 					<config>
 						<relationshipType>system:reference</relationshipType>
-						<allowContentType>gallery-look</allowContentType>
+						<allowContentType>gallery-design</allowContentType>
 						<allowPath>${site}/</allowPath>
 					</config>
 				</input>
