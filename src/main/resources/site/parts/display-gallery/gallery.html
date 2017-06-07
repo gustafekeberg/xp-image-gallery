@@ -4,27 +4,10 @@
 			Gallery
 		</h1>
 	</header>
-	<div class="well">
-		<p>
-			<strong>A way to get settings from gallery settings JSON directly in Thymeleaf without writing a parser!</strong>
-		</p>
-		<pre>
-<span data-th-remove="tag" data-th-text="'thumbnails.captions = ' + ${style.thumbnails.captions ? 'true' : 'false'}" />
-<span data-th-remove="tag" data-th-text="'thumbnails.click = ' + ${style.thumbnails.click ? 'true' : 'false'}" />
-<span data-th-remove="tag" data-th-text="'thumbnails.shape = ' + ${style.thumbnails.shape ? 'true' : 'false'}" />
-<span data-th-remove="tag" data-th-text="'thumbnails.style = ' + ${style.thumbnails.style ? 'true' : 'false'}" />
-<span data-th-remove="tag" data-th-text="'thumbnails.size = ' + ${style.thumbnails.size ? 'true' : 'false'}" />
-
-<div data-th-if="${style.viewer.pswp}">
-<span data-th-remove="tag" data-th-text="'viewer.pswp = ' + ${style.viewer.pswp ? 'true' : 'false'}" />
-
-<span data-th-remove="tag" data-th-text="'viewer.pswp.caption = ' + ${style.viewer.pswp.caption ? 'true' : 'false'}" />
-<span data-th-remove="tag" data-th-text="'viewer.pswp.share = ' + ${style.viewer.pswp.share ? 'true' : 'false'}" />
-</div>
-</pre>
-	</div>
+	
 	<div
-	data-th-class="'pswp-gallery-container image-container row clearfix' + ${style.vAlign ? ' vertical-align' : ''}"
+	data-th-class="
+	'pswp-gallery-container image-container row clearfix' +	${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.vAlign) ? ' vertical-align' : ''}"
 	data-th-attr="user-settings=${userSettings}"
 	itemscope=""
 	itemtype="http://schema.org/ImageGallery"
@@ -42,7 +25,7 @@
 	itemprop="contentUrl"
 	>
 	<img
-	class="img-responsive img-rounded"
+	data-th-class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
 	data-th-src="${portal.imageUrl({ '_id=' + image.id, '_scale=max(768)'})}"
 	/>
 	<figcaption data-th-class="${displayFigcaptions ? '' : 'sr-only'}">
