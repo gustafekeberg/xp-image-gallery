@@ -3,15 +3,16 @@
 	<display-name>Column style</display-name>
 	<items>
 		<input name="col" type="RadioButton">
-			<label>Columns</label>
+			<label>Column size</label>
+			<help-text>Selected size will affect the number of columns that will fit on a row. On a small screen it is normally wise to use a large column size and on a large screen you will use a small column size.</help-text>
 			<occurrences minimum="0" maximum="1"/>
 			<config>
-				<option value="12">1</option>
-				<option value="6">2</option>
-				<option value="4">3</option>
-				<option value="3">4</option>
-				<option value="2">6</option>
-				<option value="1">12</option>
+				<option value="12">XL</option>
+				<option value="6">L</option>
+				<option value="4">M</option>
+				<option value="3">S</option>
+				<option value="2">XS</option>
+				<option value="1">XXS</option>
 			</config>
 			<default>12</default>
 		</input>

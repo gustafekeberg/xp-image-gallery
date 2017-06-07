@@ -2,18 +2,87 @@
 <mixin>
 	<display-name>Photoswipe - config</display-name>
 	<items>
-		<input name="caption" type="CheckBox">
-			<label>Show image caption</label>
-			<help-text></help-text>	
+		
+		<option-set name="controls">
+			<label>Controls</label>
+			<expanded>false</expanded>
 			<occurrences minimum="0" maximum="1"/>
-			<default>checked</default>
-		</input>
-		<input name="share" type="CheckBox">
-			<label>Share buttons</label>
-			<help-text></help-text>	
-			<occurrences minimum="0" maximum="1"/>
-			<default>checked</default>
-		</input>
+			<help-text></help-text>
+			<options minimum="0" maximum="100">
+				<option name="share">
+					<label>Share buttons</label>
+					<help-text></help-text>
+					<items>
+						<input name="media" type="ComboBox">
+							<label>Media</label>
+							<help-text></help-text>
+							<occurrences minimum="0" maximum="0"/>
+							<config>
+								<option value="facebook">Facebook</option>
+								<option value="twitter">Twitter</option>
+								<option value="pinterest">Pinterest</option>
+								<option value="download">Download</option>
+							</config>
+						</input>
+						<item-set name="custom">
+							<label>Custom link</label>
+							<help-text>Enter your custom share-link. Use {{text}} and {{url}} in yuor link to make a link pointing on particular image.</help-text>
+							<occurrences minimum="0" maximum="0"/>
+							<items>
+								<input name="id" type="TextLine">
+									<label>ID</label>
+									<help-text>Unique id.</help-text>
+									<occurrences minimum="1" maximum="1"/>
+									<config>
+										<regexp>^[a-zA-Z_0-9]*$</regexp>
+									</config>
+								</input>
+								<input name="label" type="TextLine">
+									<label>Label</label>
+									<help-text>Button label.</help-text>
+									<occurrences minimum="1" maximum="1"/>
+									<config/>
+								</input>
+								<input name="url" type="TextLine">
+									<label>URL</label>
+									<help-text>{{text}} and {{url}} will be replaced an make your link point to a particular image.</help-text>
+									<occurrences minimum="1" maximum="1"/>
+									<config/>
+								</input>
+							</items>
+						</item-set>
+					</items>
+				</option>
 
+				<option name="fullscreen">
+					<label>Full screen</label>
+					<help-text></help-text>
+				</option>
+				<option name="close">
+					<label>Close</label>
+					<help-text></help-text>
+				</option>
+				<option name="caption">
+					<label>Caption</label>
+					<help-text></help-text>
+				</option>
+				<option name="zoom">
+					<label>Zoom</label>
+					<help-text></help-text>
+				</option>
+				<option name="counter">
+					<label>Counter</label>
+					<help-text></help-text>
+				</option>
+				<option name="arrow">
+					<label>Arrow</label>
+					<help-text></help-text>
+				</option>
+				<option name="preloader">
+					<label>Preloader</label>
+					<help-text></help-text>
+				</option>
+			</options>
+		</option-set>
 	</items>
 </mixin>
