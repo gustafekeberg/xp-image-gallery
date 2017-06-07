@@ -1,9 +1,17 @@
-// Todo: 
-// 
-// - [ ] Parse PSWP settings - make function?
-//
-//
+/*Todo: 
+ 
+- [x] Parse PSWP settings - make function?
+- [ ] Flatten config?
+- [x] Grid
+- [x] Style
+- [x] PSWP-settings
+- [ ] Size
+- [ ] Ratio
+- [ ] Captions
+- [ ] Clicked
+- [ ] Auto-settings: when something is set, sometimes default values has to be applied on other setting
 
+*/
 var libs = {
 	portal: require('/lib/xp/portal'),
 	content: require('/lib/xp/content'),
@@ -23,28 +31,27 @@ exports.get = function(req) {
 	libs.content.get({ key: config.gallery }) :
 	libs.content.get({ key: content._id });
 
+	// Display message if no gallery is selected or found on current location
 	if (selectedGallery.type !== app.name + ":gallery") {
 		var notFound = "<div><p><strong>Gallery not found!</strong></p><p>Please check your settings!</p></div>";
 		return {
 			body: notFound,
 		};
 	}
+	// Data and setup for gallery
 	var data = selectedGallery.data;
-
 	var images = collectImageData(data.images);
 	var design = config.design || siteConfig.design;
 	var style = design ? libs.content.get({
 		key: design
 	}) : undefined;
 	var styleConf = style ? style.data : undefined;
-
-	// libs.util.log("styleConf: " + design);
 	var styleModel = prepareStyle(styleConf);
 
 	// Parse settings to pass on to image viewer
 	var userSettings = PSWPUserSettings (styleConf.viewer);
 
-	// Setup model for part render
+	// Setup thymeleaf model for part
 	var model = {
 		config: config,
 		style: styleModel,
@@ -103,7 +110,7 @@ function prepareStyle(styleConf) {
 	};
 	var combinedStyle = combineStyles(defaultStyle, styleConf);
 	libs.util.log(combinedStyle);
-	// styleModel.vAlign = true;
+	// combinedStyle.vAlign = true;
 	return combinedStyle;
 }
 
@@ -144,11 +151,16 @@ function thumbnailsDefaultSettings () {
 }
 
 function PSWPUserSettings (json) {
-	// Parse settings
+	/*
+	Parse settings
+	*/
+
+	// Return if no pswp settings exist
 	if (!json || !json.pswp)
-		return undefined;
+		return;
 	var pswp = json.pswp;
-	
+
+	// Settings that are available in PSWP
 	var availablePSWPUserSettings = {
 		showHideOpacity: true,
 		showAnimationDuration: 0,
@@ -190,7 +202,7 @@ function PSWPUserSettings (json) {
 	var PSWPUserSettings = {};
 	if (controls)
 	{
-		// Set control to true/false if exists or not
+		// Set different controls to true/false if exists or not
 		PSWPUserSettings = {
 			closeEl: controls.close ? true : false,
 			captionEl: controls.caption ? true : false,
@@ -213,7 +225,7 @@ function parseShareButtons (c) {
 		media = forceArray(media);
 	if (custom)
 		custom = forceArray(custom);
-	var definedShareButtons = {
+	var preDefShareBtns = {
 		'facebook': {
 			id: 'facebook',
 			label: 'Share on Facebook',
@@ -239,15 +251,15 @@ function parseShareButtons (c) {
 	for (var i in media)
 	{
 		var key = media[i];
-		array.push(definedShareButtons[key]);
+		array.push(preDefShareBtns[key]);
 	}
 	if (custom)
 		array = array.concat(custom);
 	return array;
 }
+
 function getColsetup(config) {
 	var defaultSetup = "col-xs-12";
-
 	var setup = "";
 	if (!config || !config.columns)
 		return defaultSetup;
@@ -261,6 +273,9 @@ function getColsetup(config) {
 }
 
 function collectImageData(list) {
+	/*
+	Creat array over images and image data from list of image id's
+	 */
 	var array = [];
 	for (var i = 0, len = list.length; i < len; i++) {
 		var c = libs.content.get({
