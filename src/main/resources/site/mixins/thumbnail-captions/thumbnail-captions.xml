@@ -2,7 +2,7 @@
 <mixin>
 	<display-name>Thumbnail captions</display-name>
 	<items>
-		<option-set name="captions">
+		<option-set name="options">
 			<label>Captions</label>
 			<expanded>false</expanded>
 			<occurrences minimum="1" maximum="1"/>
