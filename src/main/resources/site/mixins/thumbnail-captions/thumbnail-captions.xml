@@ -2,7 +2,88 @@
 <mixin>
 	<display-name>Thumbnail captions</display-name>
 	<items>
-		<option-set name="options">
+		<input name="hide" type="CheckBox">
+			<label>Hide from thumbnails</label>
+			<help-text>Hide captions from thumbnail view</help-text>	
+			<occurrences minimum="0" maximum="1"/>
+			<default>checked</default>
+		</input>
+		<field-set name="include">
+			<label>Include</label>
+			<help-text>Include these text elements</help-text>
+			<items>
+				<input name="title" type="CheckBox">
+					<label>Title</label>
+					<help-text>Include title in figcaption</help-text>	
+					<occurrences minimum="0" maximum="1"/>
+					<default>checked</default>
+				</input>
+				<input name="caption" type="CheckBox">
+					<label>Caption</label>
+					<help-text>Include caption in figcaption</help-text>	
+					<occurrences minimum="0" maximum="1"/>
+					<default/>
+				</input>
+				<input name="artist" type="CheckBox">
+					<label>Artist</label>
+					<help-text>Include artist in figcaption</help-text>	
+					<occurrences minimum="0" maximum="1"/>
+					<default/>
+				</input>
+				<input name="copyright" type="CheckBox">
+					<label>Copyright</label>
+					<help-text>Include copyright in figcaption</help-text>	
+					<occurrences minimum="0" maximum="1"/>
+					<default/>
+				</input>
+			</items>
+		</field-set>
+		<field-set name="custom">
+			<label>Customize</label>
+			<help-text></help-text>
+			<items>
+				<item-set name="preText">
+					<label>Pre-text</label>
+					<help-text>Add pre-text</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<items>
+						<input name="artist" type="TextLine">
+							<label>Artist pre-text</label>
+							<help-text>Text preceeding the artist: &#39;Photo by:&#39;</help-text>
+							<occurrences minimum="0" maximum="1"/>
+							<config/>
+							<default>Artist:</default>
+						</input>
+						<input name="copyright" type="TextLine">
+							<label>Copyright pre-text</label>
+							<help-text>Text preceeding the copyright notice: &#39;Copyright&#39;</help-text>
+							<occurrences minimum="0" maximum="1"/>
+							<config/>
+							<default>Copyright</default>
+						</input>
+					</items>
+				</item-set>
+				<item-set name="defaultText">
+					<label>Default text</label>
+					<help-text>Set default texts for all images</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<items>
+						<input name="artistText" type="TextLine">
+							<label>Artist</label>
+							<help-text>Replace artist with this text.</help-text>
+							<occurrences minimum="0" maximum="1"/>
+						</input>
+						<input name="copyrightText" type="TextLine">
+							<label>Copyright</label>
+							<help-text>Enter copyright notice to be used for all images.</help-text>
+							<occurrences minimum="0" maximum="1"/>
+						</input>
+					</items>
+				</item-set>
+			</items>
+		</field-set>
+
+		<!-- <option-set name="options">
 			<label>Captions</label>
 			<expanded>false</expanded>
 			<occurrences minimum="1" maximum="1"/>
@@ -41,13 +122,10 @@
 					</items>
 				</option>
 				<option name="hide">
-					<label>Hide from thumbnails</label>
-					<help-text>Elements selected here will be hidden in figcaptions below thumbnail but can be rendered in viewer.</help-text>
-					<items>
-						<inline mixin="figcaption-content"/>
-					</items>
+					<label>Hide figcaption form thumbnails</label>
+					<help-text>Figcaptions below thumbnails will be hidden.</help-text>
 				</option>
 			</options>
-		</option-set>
+		</option-set> -->
 	</items>
 </mixin>
