@@ -68,12 +68,12 @@
 					<help-text>Set default texts for all images</help-text>
 					<occurrences minimum="0" maximum="1"/>
 					<items>
-						<input name="artistText" type="TextLine">
+						<input name="artist" type="TextLine">
 							<label>Artist</label>
 							<help-text>Replace artist with this text.</help-text>
 							<occurrences minimum="0" maximum="1"/>
 						</input>
-						<input name="copyrightText" type="TextLine">
+						<input name="copyright" type="TextLine">
 							<label>Copyright</label>
 							<help-text>Enter copyright notice to be used for all images.</help-text>
 							<occurrences minimum="0" maximum="1"/>
