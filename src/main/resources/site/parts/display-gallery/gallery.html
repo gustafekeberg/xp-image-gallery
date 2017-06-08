@@ -1,40 +1,67 @@
 <div class="pswp-gallery-wrapper">
-	<header data-th-if="${config.displayHeader}">
-		<h1 data-th-text="${name}">
+	<header th:if="${config.displayHeader}">
+		<h1 th:text="${name}">
 			Gallery
 		</h1>
 	</header>
 	
 	<div
-	data-th-class="
+	th:class="
 	'pswp-gallery-container image-container row clearfix' +	${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.vAlign) ? ' vertical-align' : ''}"
-	data-th-attr="user-settings=${userSettings}"
+	th:attr="user-settings=${userSettings}"
 	itemscope=""
 	itemtype="http://schema.org/ImageGallery"
 	>
 	<figure
-	data-th-class="${style.cols + ''}"
-	data-th-each="image, index : ${images}"
+	th:class="${style.cols + ''}"
+	th:each="image, index : ${images}"
 	itemprop="associatedMedia"
 	itemscope=""
 	itemtype="http://schema.org/ImageObject"
 	>
 	<a
-	data-th-attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
-	data-th-href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
+	th:attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
+	th:href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
 	itemprop="contentUrl"
 	>
 	<img
-	data-th-class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
-	data-th-src="${portal.imageUrl({ '_id=' + image.id, '_scale=max(768)'})}"
+	th:class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
+	th:src="${portal.imageUrl({ '_id=' + image.id, '_scale=max(768)'})}"
 	/>
-	<figcaption data-th-class="${displayFigcaptions ? '' : 'sr-only'}">
-		<strong data-th-text="${image.title}" />
-		<div data-th-remove="${(image.caption == '') ? 'all' : 'tag'}">
-			<br /><em data-th-text="${image.caption}" />
+	<figcaption
+	th:class="${(cpt.hide) ? 'sr-only' : ''}"
+	th:if="${(style.thumbnails and style.thumbnails.captions)}"
+	th:with="cpt=${style.thumbnails.captions}"
+	>
+		<div th:remove="${(image.title == '' or !cpt.title) ? 'all' : 'tag'}">
+		<strong th:text="${image.title}" />
+		<br/>
 		</div>
-		<div data-th-remove="${(image.artist == '') ? 'all' : 'tag'}">
-			<br /><span data-th-text="${'Foto: ' + image.artist}"/>
+		<div th:remove="${(image.caption == '' or !cpt.caption) ? 'all' : 'tag'}">
+		<em
+		th:remove="${cpt.caption ? 'none' : 'all'}"
+		th:text="${image.caption}"
+		/>
+		<br/>
+		</div>
+		<div th:remove="${(cpt.artist and (image.artist or (cpt.defaultText and cpt.defaultText.artist))) ? 'tag' : 'all'}">
+		<span th:text="${( 
+		(cpt.defaultText and cpt.defaultText.artist)
+		? cpt.defaultText.artist
+		: (
+		(cpt.preText and cpt.preText.artist)
+		?	cpt.preText.artist + ' ' : ''
+		)	+ image.artist )}"/>
+		<br/>
+		</div>
+		<div th:remove="${(cpt.copyright and (image.copyright or (cpt.defaultText and cpt.defaultText.copyright))) ? 'tag' : 'all'}">
+		<span th:text="${( 
+		(cpt.defaultText and cpt.defaultText.copyright)
+		? cpt.defaultText.copyright
+		: (
+		(cpt.preText and cpt.preText.copyright)
+		?	cpt.preText.copyright + ' ' : ''
+		)	+ image.copyright )}"/>
 		</div>
 	</figcaption>
 </a>
