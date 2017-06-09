@@ -1,17 +1,3 @@
-/*Todo: 
- 
-- [x] Parse PSWP settings - make function?
-- [ ] Flatten config?
-- [x] Grid
-- [x] Style
-- [x] PSWP-settings
-- [ ] Size
-- [ ] Ratio
-- [ ] Captions
-- [ ] Clicked
-- [ ] Auto-settings: when something is set, sometimes default values has to be applied on other setting
-
-*/
 var libs = {
 	portal: require('/lib/xp/portal'),
 	content: require('/lib/xp/content'),
@@ -45,11 +31,13 @@ exports.get = function(req) {
 	var style = design ? libs.content.get({
 		key: design
 	}) : undefined;
-	var styleConf = style ? style.data : undefined;
-	var styleModel = prepareStyle(styleConf);
+
+	// parse and prepare data
+	var styleConf = style ? style.data : undefined; // get style data
+	var styleModel = prepareStyle(styleConf); // prepare style data
 
 	// Parse settings to pass on to image viewer
-	var userSettings = PSWPUserSettings (styleConf.viewer);
+	var userSettings = (styleConf && styleConf.viewer) ? PSWPUserSettings (styleConf.viewer) : undefined;
 
 	// Setup thymeleaf model for part
 	var model = {
@@ -66,23 +54,27 @@ exports.get = function(req) {
 	var view = resolve('gallery.html');
 	var body = libs.thymeleaf.render(view, model);
 
-	// Render pageContributions for image viewer
-	var addStyle = resolve('style.html');
-	var pswpAssets = resolve('assets.html');
-	var pswpRootEl = resolve('root-el.html');
-	var assets = libs.thymeleaf.render(pswpAssets, {});
-	var rootEl = libs.thymeleaf.render(pswpRootEl, {});
-	var styleEl = libs.thymeleaf.render(addStyle, {});
+	var bodyEnd = [];
+	libs.util.log(styleModel.viewer);
+	if (styleModel.viewer)
+	{	
+		// Render pageContributions for image viewer
+		var addStyle = resolve('style.html');
+		var pswpAssets = resolve('assets.html');
+		var pswpRootEl = resolve('root-el.html');
+		var contriButions = [
+			libs.thymeleaf.render(pswpAssets, {}),
+			libs.thymeleaf.render(pswpRootEl, {}),
+			libs.thymeleaf.render(addStyle, {}),
+		];
+		bodyEnd = bodyEnd.concat(contriButions);
+	}
 
 	return {
 		body: body,
 		contentType: 'text/html',
 		pageContributions: {
-			"bodyEnd": [
-			rootEl,
-			assets,
-			styleEl,
-			]
+			"bodyEnd": bodyEnd
 		}
 	};
 };
@@ -104,16 +96,13 @@ function prepareStyle(styleConf) {
 
 	var defaultStyle = {
 		grid: "bootstrap3",
-		cols: styleConf.columns ? getColsetup(styleConf) : "col-xs-12",
+		cols: (styleConf && styleConf.columns) ? getColsetup(styleConf) : "col-xs-12",
 		thumbnails: thumbnailsDefaultSettings(),
 		viewer: {},
 	};
 	var combinedStyle = combineStyles(defaultStyle, styleConf);
-	libs.util.log(combinedStyle);
-	// combinedStyle.vAlign = true;
 	return combinedStyle;
 }
-
 function thumbnailsDefaultSettings () {
 	return {
 		"_selected": [
@@ -248,34 +237,54 @@ function parseShareButtons (c) {
 			download: true
 		}};
 
-	for (var i in media)
-	{
-		var key = media[i];
-		array.push(preDefShareBtns[key]);
+		for (var i in media)
+		{
+			var key = media[i];
+			array.push(preDefShareBtns[key]);
+		}
+		if (custom)
+			array = array.concat(custom);
+		return array;
 	}
-	if (custom)
-		array = array.concat(custom);
-	return array;
-}
 
-function getColsetup(config) {
-	var defaultSetup = "col-xs-12";
-	var setup = "";
-	if (!config || !config.columns)
-		return defaultSetup;
-	var colStyle = config.columns;
-	var selected = forceArray(colStyle._selected);
-	for (var i = 0, len = selected.length; i < len; i++) {
-		var key = selected[i];
-		setup += key + "-" + colStyle[key].col + " ";
+	function getColsetup(config) {
+		var defaultSetup = "col-xs-12";
+		var setup = "";
+		if (!config || !config.columns)
+			return defaultSetup;
+		var colStyle = config.columns;
+		var selected = forceArray(colStyle._selected);
+		for (var i = 0, len = selected.length; i < len; i++) {
+			var key = selected[i];
+			setup += key + "-" + colStyle[key].col + " ";
+		}
+		return setup;
 	}
-	return setup;
-}
 
-function collectImageData(list) {
+	function collectImageData(list) {
 	/*
 	Creat array over images and image data from list of image id's
-	 */
+	*/
+	
+	function imageSizes (arg) {
+		var ratios = {
+			org: '',
+			r1_1: '',
+			r2_1: '',
+			r3_2: '',
+			r5_4: '',
+			cust: '',
+		};
+		var size = {
+			xs: '',
+			sm: '',
+			md: '',
+			lg: '',
+			cust: ''
+		};
+		return arg;
+	}
+
 	var array = [];
 	for (var i = 0, len = list.length; i < len; i++) {
 		var c = libs.content.get({

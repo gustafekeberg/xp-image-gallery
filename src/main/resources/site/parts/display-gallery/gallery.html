@@ -7,10 +7,11 @@
 	
 	<div
 	th:class="
-	'pswp-gallery-container image-container row clearfix' +	${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.vAlign) ? ' vertical-align' : ''}"
+	${(style.viewer and style.viewer.pswp) ? 'pswp-gallery-container ' : ''} + 'image-container row clearfix' +	${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.vAlign) ? ' vertical-align' : ''}"
 	th:attr="user-settings=${userSettings}"
 	itemscope=""
 	itemtype="http://schema.org/ImageGallery"
+
 	>
 	<figure
 	th:class="${style.cols + ''}"

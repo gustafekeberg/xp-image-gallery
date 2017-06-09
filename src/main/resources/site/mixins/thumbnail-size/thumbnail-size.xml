@@ -6,10 +6,11 @@
 			<label>Size</label>
 			<occurrences minimum="0" maximum="0"/>
 			<config>
-				<option value="small">Small</option>
-				<option value="medium">Medium</option>
-				<option value="large">Large</option>
-				<option value="custom">Custom</option>
+				<option value="xs">XS</option>
+				<option value="sm">SM</option>
+				<option value="md">MD</option>
+				<option value="lg">LG</option>
+				<option value="cust">Custom</option>
 			</config>
 			<default>small</default>
 		</input>

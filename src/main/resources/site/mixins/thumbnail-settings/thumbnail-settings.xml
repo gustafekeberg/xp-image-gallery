@@ -9,11 +9,9 @@
 			<help-text>Settings for the thumbnails.</help-text>
 			<options minimum="0" maximum="100">
 				<option name="click">
-					<label>Clicked</label>
+					<label>Click action</label>
 					<default>true</default>
-					<items>
-						<inline mixin="thumbnail-click"/>
-					</items>
+					<help-text>Open image or viewer when image is clicked.</help-text>
 				</option>
 				<option name="captions">
 					<label>Captions</label>
