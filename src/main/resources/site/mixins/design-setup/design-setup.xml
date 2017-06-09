@@ -12,10 +12,19 @@
 					<help-text>Apply custom CSS-classes to your thumbnails</help-text>
 					<occurrences minimum="0" maximum="1"/>
 					<items>
-						<input name="class" type="TextLine">
-							<label>CSS-class</label>
-							<help-text>Enter custom CSS-classes.</help-text>
-							<occurrences minimum="1" maximum="1"/>
+						<input name="container" type="TextLine">
+							<label>Container CSS-class</label>
+							<help-text>Enter custom CSS-classes for container.</help-text>
+							<occurrences minimum="0" maximum="1"/>
+							<config>
+								<regexp>^[\s_a-zA-Z0-9-]*$</regexp>
+							</config>
+							<default/>
+						</input>
+						<input name="items" type="TextLine">
+							<label>Items CSS-class</label>
+							<help-text>Enter custom CSS-classes for items.</help-text>
+							<occurrences minimum="0" maximum="1"/>
 							<config>
 								<regexp>^[\s_a-zA-Z0-9-]*$</regexp>
 							</config>
