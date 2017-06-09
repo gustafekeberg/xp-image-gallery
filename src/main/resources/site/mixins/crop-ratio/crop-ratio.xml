@@ -7,11 +7,11 @@
 			<help-text></help-text>
 			<occurrences minimum="1" maximum="0"/>
 			<config>
-				<option value="original">Original</option>
-				<option value="1:1">Ratio (1:1)</option>
-				<option value="2:1">Ratio (2:1)</option>
-				<option value="3:2">Ratio (3:2)</option>
-				<option value="5:4">Ratio (5:4)</option>
+				<option value="org">Original</option>
+				<option value="r1_1">Ratio (1:1)</option>
+				<option value="r2_1">Ratio (2:1)</option>
+				<option value="r3_2">Ratio (3:2)</option>
+				<option value="r5_4">Ratio (5:4)</option>
 				<option value="custom">Custom</option>
 			</config>
 			<default>original</default>
