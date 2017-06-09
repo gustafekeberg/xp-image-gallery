@@ -12,10 +12,7 @@ exports.get = function(req) {
 	var siteConfig = libs.portal.getSiteConfig();
 
 	// get selected gallery or try to find gallery at current location if no selection exists
-	var selectedGallery =
-	config.gallery ?
-	libs.content.get({ key: config.gallery }) :
-	libs.content.get({ key: content._id });
+	var selectedGallery =	config.gallery ? libs.content.get({ key: config.gallery }) :	libs.content.get({ key: content._id });
 
 	// Display message if no gallery is selected or found on current location
 	if (selectedGallery.type !== app.name + ":gallery") {
@@ -26,7 +23,6 @@ exports.get = function(req) {
 	}
 	// Data and setup for gallery
 	var data = selectedGallery.data;
-	var images = collectImageData(data.images);
 	var design = config.design || siteConfig.design;
 	var style = design ? libs.content.get({
 		key: design
@@ -35,6 +31,7 @@ exports.get = function(req) {
 	// parse and prepare data
 	var styleConf = style ? style.data : undefined; // get style data
 	var styleModel = prepareStyle(styleConf); // prepare style data
+	var images = collectImageData({list: data.images});
 
 	// Parse settings to pass on to image viewer
 	var userSettings = (styleConf && styleConf.viewer) ? PSWPUserSettings (styleConf.viewer) : undefined;
@@ -49,13 +46,12 @@ exports.get = function(req) {
 		data: data,
 		userSettings: JSON.stringify(userSettings),
 	};
-	
+	// libs.util.log(styleModel);
 	// Get view and render part-body
 	var view = resolve('gallery.html');
 	var body = libs.thymeleaf.render(view, model);
 
 	var bodyEnd = [];
-	libs.util.log(styleModel.viewer);
 	if (styleModel.viewer)
 	{	
 		// Render pageContributions for image viewer
@@ -249,24 +245,40 @@ function parseShareButtons (c) {
 
 	function getColsetup(config) {
 		var defaultSetup = "col-xs-12";
-		var setup = "";
+		var cssClass = "";
 		if (!config || !config.columns)
 			return defaultSetup;
-		var colStyle = config.columns;
-		var selected = forceArray(colStyle._selected);
+		// get column styles from config
+		var colStyles = config.columns;
+
+		// force array of selected styles
+		var selected = forceArray(colStyles._selected);
 		for (var i = 0, len = selected.length; i < len; i++) {
-			var key = selected[i];
-			setup += key + "-" + colStyle[key].col + " ";
+			// get screensize specific style
+			var screenSize = selected[i];
+
+			var size = colStyles[screenSize];
+			// construct CSS class if size setting exists
+			if (size)
+				cssClass += screenSize + "-" + size.col + " ";
 		}
-		return setup;
+		return cssClass;
 	}
 
-	function collectImageData(list) {
+	function collectImageData(params) {
 	/*
-	Creat array over images and image data from list of image id's
+	Create array over images and image data from list of image id's
 	*/
 	
-	function imageSizes (arg) {
+	var list = params.list,
+	ratio = params.ratio || 'org',
+	size = params.size || 'md';
+	if (!list)
+		return;
+	if (ratio == 'cust' && !params.dimension)
+		ratio = 'org';
+	function imageSizes (ratio, size, dimension) {
+
 		var ratios = {
 			org: '',
 			r1_1: '',
@@ -275,34 +287,36 @@ function parseShareButtons (c) {
 			r5_4: '',
 			cust: '',
 		};
-		var size = {
+		var sizes = {
 			xs: '',
 			sm: '',
 			md: '',
 			lg: '',
 			cust: ''
 		};
-		return arg;
+		return;
 	}
 
 	var array = [];
 	for (var i = 0, len = list.length; i < len; i++) {
-		var c = libs.content.get({
+		var current = libs.content.get({
 			key: list[i]
 		});
-		var data = c.data;
-		var media = c.x.media;
+		var data = current.data;
+		var media = current.x.media;
 		var imageInfo = media.imageInfo;
+		var dimensions = [imageInfo.imageWidth, imageInfo.imageHeight];
+
 		var imageData = {
-			id: c._id,
-			title: c.displayName,
+			id: current._id,
+			title: current.displayName,
 			caption: data.caption,
 			artist: data.artist,
 			copyright: data.copyright,
 			tags: data.tags,
 			// data: data,
 			// media: media,
-			dimensions: [imageInfo.imageWidth, imageInfo.imageHeight],
+			dimensions: dimensions,
 		};
 		array.push(imageData);
 	}
