@@ -6,47 +6,37 @@ var libs = {
 };
 
 exports.get = function(req) {
-	var component = libs.portal.getComponent();
-	var content = libs.portal.getContent();
-	var config = component.config;
-	var siteConfig = libs.portal.getSiteConfig();
+	return handleGet(req);
+};
+exports.post = function(req) {
+	return req;
+};
 
-	// get selected gallery or try to find gallery at current location if no selection exists
-	var selectedGallery =	config.gallery ? libs.content.get({ key: config.gallery }) :	libs.content.get({ key: content._id });
+function handleGet (req) {
 
-	// Display message if no gallery is selected or found on current location
-	if (selectedGallery.type !== app.name + ":gallery") {
-		var notFound = "<div><p><strong>Gallery not found!</strong></p><p>Please check your settings!</p></div>";
-		return {
-			body: notFound,
-		};
+	var content = getData.content();
+	var config = getData.componentConfig();
+	var siteConfig = getData.siteConfig();
+	var gallery =	getData.gallery();
+
+	// Display friendly message if no gallery is found
+	if (!gallery) {
+		return { body: '<div><p><strong>Gallery not found!</strong></p><p>Please check your settings!</p></div>' };
 	}
-	// Data and setup for gallery
-	var data = selectedGallery.data;
-	var design = config.design || siteConfig.design;
-	var style = design ? libs.content.get({
-		key: design
-	}) : undefined;
-
+	
 	// parse and prepare data
-	var styleConf = style ? style.data : undefined; // get style data
-	var styleModel = prepareStyle(styleConf); // prepare style data
-	var images = collectImageData({list: data.images});
-
-	// Parse settings to pass on to image viewer
-	var userSettings = (styleConf && styleConf.viewer) ? PSWPUserSettings (styleConf.viewer) : undefined;
+	var styleModel = makeStyleModel(); // prepare style data
+	var imageData = prepImageData();
 
 	// Setup thymeleaf model for part
 	var model = {
 		config: config,
 		style: styleModel,
-		name: selectedGallery.displayName,
-		tags: data.tags,
-		images: images,
-		data: data,
-		userSettings: JSON.stringify(userSettings),
+		name: gallery.displayName,
+		images: imageData,
+		PSWPUIOptions: getPSWPUIOptions() ? JSON.stringify(getPSWPUIOptions()) : undefined,
 	};
-	// libs.util.log(styleModel);
+	
 	// Get view and render part-body
 	var view = resolve('gallery.html');
 	var body = libs.thymeleaf.render(view, model);
@@ -59,9 +49,9 @@ exports.get = function(req) {
 		var pswpAssets = resolve('assets.html');
 		var pswpRootEl = resolve('root-el.html');
 		var contriButions = [
-			libs.thymeleaf.render(pswpAssets, {}),
-			libs.thymeleaf.render(pswpRootEl, {}),
-			libs.thymeleaf.render(addStyle, {}),
+		libs.thymeleaf.render(pswpAssets, {}),
+		libs.thymeleaf.render(pswpRootEl, {}),
+		libs.thymeleaf.render(addStyle, {}),
 		];
 		bodyEnd = bodyEnd.concat(contriButions);
 	}
@@ -73,34 +63,49 @@ exports.get = function(req) {
 			"bodyEnd": bodyEnd
 		}
 	};
+}
+
+
+var getData = {
+	// get to the data used in the display gallery part
+	content: function () {
+		return libs.portal.getContent();
+	},
+	componentConfig: function () {
+		return libs.portal.getComponent().config;
+	},
+	siteConfig: function () {
+		return libs.portal.getSiteConfig();
+	},
+	gallery: function () {
+		var gallery = /* gallery selected? */ this.componentConfig().gallery ? /* get selected */libs.content.get({ key: getData.componentConfig().gallery }) : /* else try current content */ libs.content.get({ key: this.content()._id });
+		if (gallery.type !== app.name + ":gallery")
+			return;
+		else
+			return gallery;
+	},
+	styleData: function () {
+		var selectedDesign = this.componentConfig().design || this.siteConfig().design;
+		var style = selectedDesign ? libs.content.get({ key: selectedDesign	}) : undefined;
+		var styleData = style ? style.data : undefined;
+		return styleData;
+	}
 };
 
-exports.post = function(req) {
-	return req;
-};
+function makeStyleModel () {
+	// Make model for image list
+	var styleConf = getData.styleData();
 
-function prepareStyle(styleConf) {
-
-	function combineStyles (defaultStyle, customStyle) {
-		var combined = defaultStyle;
-		for (var key in customStyle)
+	function merge (defaults, custom) {
+		var combined = defaults;
+		for (var key in custom)
 		{
-			combined[key] = customStyle[key];
+			combined[key] = custom[key];
 		}
 		return combined;
 	}
 
-	var defaultStyle = {
-		grid: "bootstrap3",
-		cols: (styleConf && styleConf.columns) ? getColsetup(styleConf) : "col-xs-12",
-		thumbnails: thumbnailsDefaultSettings(),
-		viewer: {},
-	};
-	var combinedStyle = combineStyles(defaultStyle, styleConf);
-	return combinedStyle;
-}
-function thumbnailsDefaultSettings () {
-	return {
+	var thumbDefaults = {
 		"_selected": [
 		"click",
 		"captions",
@@ -133,123 +138,146 @@ function thumbnailsDefaultSettings () {
 			"size": "small"
 		}
 	};
+
+	var defaults = {
+		grid: "bootstrap3",
+		cols: getColsetup(),
+		thumbnails: thumbDefaults,
+		viewer: {},
+	};
+	var merged = merge (defaults, styleConf);
+	return merged;
 }
 
-function PSWPUserSettings (json) {
-	/*
-	Parse settings
-	*/
 
+function getPSWPUIOptions () {
+	// Parser for PSWP UI Options
+	
+	var styleData = getData.styleData();
 	// Return if no pswp settings exist
-	if (!json || !json.pswp)
+	
+	var viewer = styleData.viewer || undefined;
+	if (!viewer || !viewer.pswp)
 		return;
-	var pswp = json.pswp;
+	var pswp = viewer.pswp;
 
-	// Settings that are available in PSWP
-	var availablePSWPUserSettings = {
-		showHideOpacity: true,
-		showAnimationDuration: 0,
-		hideAnimationDuration: 0,
-		bgOpacity: 0,
-		barsSize: {
-			top: 44,
-			bottom: 'auto'
-		},
-		closeEl: true,
-		captionEl: false,
-		fullscreenEl: true,
-		zoomEl: true,
-		shareEl: false,
-		counterEl: true,
-		arrowEl: true,
-		preloaderEl: true,
-		spacing: 0.12,
-		shareButtons: [{
-			id: 'facebook',
-			label: 'Share on Facebook',
-			url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
-		}, {
-			id: 'twitter',
-			label: 'Tweet',
-			url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'
-		}, {
-			id: 'pinterest',
-			label: 'Pin it',
-			url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}'
-		}, {
-			id: 'download',
-			label: 'Download image',
-			url: '{{raw_image_url}}',
-			download: true
-		}],
-	};
 	var controls = pswp.controls;
-	var PSWPUserSettings = {};
+	var PSWPUIOptions = {};
+	
+	// Set controls to true if they exist in config
 	if (controls)
 	{
-		// Set different controls to true/false if exists or not
-		PSWPUserSettings = {
-			closeEl: controls.close ? true : false,
-			captionEl: controls.caption ? true : false,
-			fullscreenEl: controls.fullscreen ? true : false,
-			zoomEl: controls.zoom ? true : false,
-			shareEl: controls.share ? true : false,
-			counterEl: controls.counter ? true : false,
+		PSWPUIOptions = {
 			arrowEl: controls.arrow ? true : false,
+			captionEl: controls.caption ? true : false,
+			closeEl: controls.close ? true : false,
+			counterEl: controls.counter ? true : false,
+			fullscreenEl: controls.fullscreen ? true : false,
 			preloaderEl: controls.preloader ? true : false,
-			shareButtons: controls.share ? parseShareButtons(controls.share) : undefined,
+			shareButtons: controls.share ? getShareBtns() : undefined,
+			shareEl: controls.share ? true : false,
+			zoomEl: controls.zoom ? true : false,
 		};
 	}
-	return PSWPUserSettings;
-}
-function parseShareButtons (c) {
-	var array = [];
-	var media = c.media;
-	var custom = c.custom;
-	if (media)
-		media = forceArray(media);
-	if (custom)
-		custom = forceArray(custom);
-	var preDefShareBtns = {
-		'facebook': {
-			id: 'facebook',
-			label: 'Share on Facebook',
-			url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
-		}, 
-		'twitter': {
-			id: 'twitter',
-			label: 'Tweet',
-			url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'
-		},
-		'pinterest': {
-			id: 'pinterest',
-			label: 'Pin it',
-			url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}'
-		},
-		'download': {
-			id: 'download',
-			label: 'Download image',
-			url: '{{raw_image_url}}',
-			download: true
-		}};
+	return PSWPUIOptions;
 
-		for (var i in media)
-		{
-			var key = media[i];
-			array.push(preDefShareBtns[key]);
-		}
+	function getShareBtns () {
+		// Parser for share buttons in PSWP UI Option
+		var btns = controls.share;
+		var array = [];
+		var pre = btns.pre;
+		var custom = btns.custom;
+		// Force array of existing share button config
+		if (pre)
+			media = forceArray(pre);
 		if (custom)
-			array = array.concat(custom);
-		return array;
-	}
+			custom = forceArray(custom);
 
-	function getColsetup(config) {
-		var defaultSetup = "col-xs-12";
-		var cssClass = "";
-		if (!config || !config.columns)
-			return defaultSetup;
+		// predefined share buttons
+		var preBtns = { 
+			'facebook': {
+				id: 'facebook',
+				label: 'Share on Facebook',
+				url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
+			}, 
+			'twitter': {
+				id: 'twitter',
+				label: 'Tweet',
+				url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'
+			},
+			'pinterest': {
+				id: 'pinterest',
+				label: 'Pin it',
+				url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}'
+			},
+			'download': {
+				id: 'download',
+				label: 'Download image',
+				url: '{{raw_image_url}}',
+				download: true
+			}};
+
+			// Push configured items to array
+			for (var i in pre)
+			{
+				var key = pre[i];
+				array.push(preBtns[key]);
+			}
+			if (custom)
+				array = array.concat(custom);
+			return array;
+		}
+	/*
+	Available PSWP UI Options
+	-------------------------
+	
+	showHideOpacity: true,
+	showAnimationDuration: 0,
+	hideAnimationDuration: 0,
+	bgOpacity: 0,
+	barsSize: {
+		top: 44,
+		bottom: 'auto'
+	},
+	closeEl: true,
+	captionEl: false,
+	fullscreenEl: true,
+	zoomEl: true,
+	shareEl: false,
+	counterEl: true,
+	arrowEl: true,
+	preloaderEl: true,
+	spacing: 0.12,
+	shareButtons: [{
+		id: 'facebook',
+		label: 'Share on Facebook',
+		url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
+	}, {
+		id: 'twitter',
+		label: 'Tweet',
+		url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'
+	}, {
+		id: 'pinterest',
+		label: 'Pin it',
+		url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}'
+	}, {
+		id: 'download',
+		label: 'Download image',
+		url: '{{raw_image_url}}',
+		download: true
+	}],
+	-------------------------
+	*/
+}
+
+function getColsetup() {
+	var styleData = getData.styleData();
+	var defaultSetup = "col-xs-12";
+	var cssClass = "";
+	if (!styleData || !styleData.columns)
+		return defaultSetup;
 		// get column styles from config
-		var colStyles = config.columns;
+		var colStyles = styleData.columns;
 
 		// force array of selected styles
 		var selected = forceArray(colStyles._selected);
@@ -265,20 +293,23 @@ function parseShareButtons (c) {
 		return cssClass;
 	}
 
-	function collectImageData(params) {
+	function prepImageData() {
 	/*
 	Create array over images and image data from list of image id's
 	*/
-	
-	var list = params.list,
+	var params = {};
+	var gallery = getData.gallery();
+	var galleryData = gallery.data;
+
+	var list = galleryData.images,
 	ratio = params.ratio || 'org',
 	size = params.size || 'md';
 	if (!list)
 		return;
 	if (ratio == 'cust' && !params.dimension)
 		ratio = 'org';
-	function imageSizes (ratio, size, dimension) {
 
+	function imageSizes (ratio, size, dimension) {
 		var ratios = {
 			org: '',
 			r1_1: '',

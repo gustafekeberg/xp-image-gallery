@@ -135,7 +135,7 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
 			items;
 
 		items = parseThumbnailElements(galleryElement);
-		userSettings = JSON.parse(galleryElement.getAttribute('user-settings'));
+		userSettings = JSON.parse(galleryElement.getAttribute('uioptions'));
 		
 		// define options (if needed)
 		

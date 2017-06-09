@@ -4,7 +4,7 @@
 	<items>
 		
 		<option-set name="controls">
-			<label>Controls</label>
+			<label>UI setup</label>
 			<expanded>false</expanded>
 			<occurrences minimum="0" maximum="1"/>
 			<help-text></help-text>
