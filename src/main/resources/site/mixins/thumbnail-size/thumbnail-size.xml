@@ -12,7 +12,7 @@
 				<option value="lg">LG</option>
 				<option value="cust">Custom</option>
 			</config>
-			<default>small</default>
+			<default>sm</default>
 		</input>
 		<input name="customValue" type="TextLine">
 			<label>Custom width (px)</label>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mixin>
+	<display-name>Thumbnail target</display-name>
+	<items>
+		<input name="target" type="RadioButton">
+			<label>Target</label>
+			<help-text>Where to go when a thumbnail is clicked?</help-text>
+			<occurrences minimum="0" maximum="0"/>
+			<config>
+				<option value="original">Original image</option>
+				<option value="cropped">Cropped image</option>
+			</config>
+			<default>original</default>
+		</input>
+	</items>
+</mixin>

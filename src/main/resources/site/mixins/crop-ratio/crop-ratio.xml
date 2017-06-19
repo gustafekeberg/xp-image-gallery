@@ -7,22 +7,22 @@
 			<help-text></help-text>
 			<occurrences minimum="1" maximum="0"/>
 			<config>
-				<option value="org">Original</option>
-				<option value="r1_1">Ratio (1:1)</option>
-				<option value="r2_1">Ratio (2:1)</option>
+				<option value="original">Original (X:Y)</option>
+				<option value="square">Square (1:1)</option>
+				<!-- <option value="r2_1">Ratio (2:1)</option>
 				<option value="r3_2">Ratio (3:2)</option>
 				<option value="r5_4">Ratio (5:4)</option>
-				<option value="custom">Custom</option>
+				<option value="custom">Custom</option> -->
 			</config>
-			<default>original</default>
+			<default>square</default>
 		</input>
-		<input name="dimension" type="TextLine">
+		<!-- <input name="dimension" type="TextLine">
 			<label>W:H</label>
 			<help-text>Width and height ratio: &#39;16:9&#39;</help-text>
 			<occurrences minimum="0" maximum="1"/>
 			<config>
 				<regexp>^\d+\:\d+$</regexp>
 			</config>
-		</input>
+		</input> -->
 	</items>
 </mixin>

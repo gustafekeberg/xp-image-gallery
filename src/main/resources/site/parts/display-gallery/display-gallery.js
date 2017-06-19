@@ -23,7 +23,7 @@ function handleGet (req) {
 	if (!gallery) {
 		return { body: '<div><p><strong>Gallery not found!</strong></p><p>Please check your settings!</p></div>' };
 	}
-	
+
 	// parse and prepare data
 	var styleModel = makeStyleModel(); // prepare style data
 	var imageData = prepImageData();
@@ -36,22 +36,22 @@ function handleGet (req) {
 		images: imageData,
 		PSWPUIOptions: getPSWPUIOptions() ? JSON.stringify(getPSWPUIOptions()) : undefined,
 	};
-	
+
 	// Get view and render part-body
 	var view = resolve('gallery.html');
 	var body = libs.thymeleaf.render(view, model);
 
 	var bodyEnd = [];
 	if (styleModel.viewer)
-	{	
+	{
 		// Render pageContributions for image viewer
 		var addStyle = resolve('style.html');
 		var pswpAssets = resolve('assets.html');
 		var pswpRootEl = resolve('root-el.html');
 		var contriButions = [
-		libs.thymeleaf.render(pswpAssets, {}),
-		libs.thymeleaf.render(pswpRootEl, {}),
-		libs.thymeleaf.render(addStyle, {}),
+			libs.thymeleaf.render(pswpAssets, {}),
+			libs.thymeleaf.render(pswpRootEl, {}),
+			libs.thymeleaf.render(addStyle, {}),
 		];
 		bodyEnd = bodyEnd.concat(contriButions);
 	}
@@ -80,9 +80,9 @@ var getData = {
 	gallery: function () {
 		var gallery = /* gallery selected? */ this.componentConfig().gallery ? /* get selected */libs.content.get({ key: getData.componentConfig().gallery }) : /* else try current content */ libs.content.get({ key: this.content()._id });
 		if (gallery.type !== app.name + ":gallery")
-			return;
+		return;
 		else
-			return gallery;
+		return gallery;
 	},
 	styleData: function () {
 		var selectedDesign = this.componentConfig().design || this.siteConfig().design;
@@ -107,11 +107,11 @@ function makeStyleModel () {
 
 	var thumbDefaults = {
 		"_selected": [
-		"click",
-		"captions",
-		"shape",
-		"style",
-		"size"
+			"click",
+			"captions",
+			"shape",
+			"style",
+			"size"
 		],
 		"click": {
 			"action": "image"
@@ -152,18 +152,18 @@ function makeStyleModel () {
 
 function getPSWPUIOptions () {
 	// Parser for PSWP UI Options
-	
+
 	var styleData = getData.styleData();
 	// Return if no pswp settings exist
-	
+
 	var viewer = styleData.viewer || undefined;
 	if (!viewer || !viewer.pswp)
-		return;
+	return;
 	var pswp = viewer.pswp;
 
 	var controls = pswp.controls;
 	var PSWPUIOptions = {};
-	
+
 	// Set controls to true if they exist in config
 	if (controls)
 	{
@@ -189,17 +189,17 @@ function getPSWPUIOptions () {
 		var custom = btns.custom;
 		// Force array of existing share button config
 		if (pre)
-			media = forceArray(pre);
+		media = forceArray(pre);
 		if (custom)
-			custom = forceArray(custom);
+		custom = forceArray(custom);
 
 		// predefined share buttons
-		var preBtns = { 
+		var preBtns = {
 			'facebook': {
 				id: 'facebook',
 				label: 'Share on Facebook',
 				url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
-			}, 
+			},
 			'twitter': {
 				id: 'twitter',
 				label: 'Tweet',
@@ -224,18 +224,18 @@ function getPSWPUIOptions () {
 				array.push(preBtns[key]);
 			}
 			if (custom)
-				array = array.concat(custom);
+			array = array.concat(custom);
 			return array;
 		}
-	/*
-	Available PSWP UI Options
-	-------------------------
-	
-	showHideOpacity: true,
-	showAnimationDuration: 0,
-	hideAnimationDuration: 0,
-	bgOpacity: 0,
-	barsSize: {
+		/*
+		Available PSWP UI Options
+		-------------------------
+
+		showHideOpacity: true,
+		showAnimationDuration: 0,
+		hideAnimationDuration: 0,
+		bgOpacity: 0,
+		barsSize: {
 		top: 44,
 		bottom: 'auto'
 	},
@@ -249,25 +249,25 @@ function getPSWPUIOptions () {
 	preloaderEl: true,
 	spacing: 0.12,
 	shareButtons: [{
-		id: 'facebook',
-		label: 'Share on Facebook',
-		url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
-	}, {
-		id: 'twitter',
-		label: 'Tweet',
-		url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'
-	}, {
-		id: 'pinterest',
-		label: 'Pin it',
-		url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}'
-	}, {
-		id: 'download',
-		label: 'Download image',
-		url: '{{raw_image_url}}',
-		download: true
-	}],
-	-------------------------
-	*/
+	id: 'facebook',
+	label: 'Share on Facebook',
+	url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}'
+}, {
+id: 'twitter',
+label: 'Tweet',
+url: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'
+}, {
+id: 'pinterest',
+label: 'Pin it',
+url: 'http://www.pinterest.com/pin/create/button/?url={{url}}&media={{image_url}}&description={{text}}'
+}, {
+id: 'download',
+label: 'Download image',
+url: '{{raw_image_url}}',
+download: true
+}],
+-------------------------
+*/
 }
 
 function getColsetup() {
@@ -275,83 +275,135 @@ function getColsetup() {
 	var defaultSetup = "col-xs-12";
 	var cssClass = "";
 	if (!styleData || !styleData.columns)
-		return defaultSetup;
-		// get column styles from config
-		var colStyles = styleData.columns;
+	return defaultSetup;
+	// get column styles from config
+	var colStyles = styleData.columns;
 
-		// force array of selected styles
-		var selected = forceArray(colStyles._selected);
-		for (var i = 0, len = selected.length; i < len; i++) {
-			// get screensize specific style
-			var screenSize = selected[i];
+	// force array of selected styles
+	var selected = forceArray(colStyles._selected);
+	for (var i = 0, len = selected.length; i < len; i++) {
+		// get screensize specific style
+		var screenSize = selected[i];
 
-			var size = colStyles[screenSize];
-			// construct CSS class if size setting exists
-			if (size)
-				cssClass += screenSize + "-" + size.col + " ";
-		}
-		return cssClass;
+		var size = colStyles[screenSize];
+		// construct CSS class if size setting exists
+		if (size)
+		cssClass += screenSize + "-" + size.col + " ";
 	}
+	return cssClass;
+}
 
-	function prepImageData() {
+function prepImageData() {
 	/*
 	Create array over images and image data from list of image id's
 	*/
 	var params = {};
+
+	// get data for gallery
 	var gallery = getData.gallery();
 	var galleryData = gallery.data;
+	var list = galleryData.images;
+	var style = makeStyleModel();
+	if (!list) return; // If we have no list we quit here
 
-	var list = galleryData.images,
-	ratio = params.ratio || 'org',
-	size = params.size || 'md';
-	if (!list)
-		return;
-	if (ratio == 'cust' && !params.dimension)
-		ratio = 'org';
-
-	function imageSizes (ratio, size, dimension) {
-		var ratios = {
-			org: '',
-			r1_1: '',
-			r2_1: '',
-			r3_2: '',
-			r5_4: '',
-			cust: '',
-		};
-		var sizes = {
-			xs: '',
-			sm: '',
-			md: '',
-			lg: '',
-			cust: ''
-		};
-		return;
+	// Get config for thumbnails and target image when clicked
+	if (style && style.thumbnails)
+	{
+		var thumbs = style.thumbnails;
+		if (thumbs.shape && thumbs.shape.dimensions)
+		params.shape = thumbs.shape.dimensions;
+		if (thumbs.click && thumbs.click.target)
+		params.target = thumbs.click.target;
 	}
 
-	var array = [];
-	for (var i = 0, len = list.length; i < len; i++) {
-		var current = libs.content.get({
-			key: list[i]
-		});
-		var data = current.data;
-		var media = current.x.media;
-		var imageInfo = media.imageInfo;
-		var dimensions = [imageInfo.imageWidth, imageInfo.imageHeight];
-
-		var imageData = {
-			id: current._id,
-			title: current.displayName,
-			caption: data.caption,
-			artist: data.artist,
-			copyright: data.copyright,
-			tags: data.tags,
-			// data: data,
-			// media: media,
-			dimensions: dimensions,
-		};
-		array.push(imageData);
+	function getImgUrls (id, sizes) {
+		// id: string, sizes: [{x: int, y: int}, {x: int, y: int}]
+		var urls = [];
+		for (var i = 0, len = sizes.length; i < len; i ++)
+		{
+			var item = sizes[i];
+			var scale = 'block(' + item.x + ',' + item.y + ')';
+			var url = libs.portal.imageUrl({id: id, scale: scale});
+			urls.push(url);
+		}
+		return urls;
 	}
-	return array;
+	function calcScale (x, y) {
+	}
+	function getSizes (params) {
+		/*
+		returns array of sizes calculated from following params
+		getSizes({x: [min, max], y: [min, max], count: count})
+		*/
+		var x = {
+			min: params.x[0],
+			max: params.x[1],
+		};
+		var y = {
+			min: params.y[0],
+			max: params.y[1],
+		}
+		var count = params.count - 1;
+		x.span = x.max - x.min;
+		y.span = y.max - y.min;
+		x.interval = x.span / count;
+		y.interval = y.span / count;
+
+		var sizes = [];
+		for (var i = 0; i <= count; i ++)
+		{
+			var size = {
+				x: Math.round(x.min + x.interval * i),
+				y: Math.round(y.min + y.interval * i)
+			}
+			sizes.push(size);
+		}
+		return sizes;
+	}
+	function getAllImageData() {
+		var array = [];
+		for (var i = 0, len = list.length; i < len; i++) {
+			var current = libs.content.get({
+				key: list[i]
+			});
+			var id = current._id;
+			var data = current.data;
+			var media = current.x.media;
+			var imageInfo = media.imageInfo;
+			var orgDimensions = [imageInfo.imageWidth, imageInfo.imageHeight];
+			var urls = getImgUrls(id, getSizes(sizeSetup))
+
+			var imageData = {
+				id: id,
+				title: current.displayName,
+				caption: data.caption,
+				artist: data.artist,
+				copyright: data.copyright,
+				tags: data.tags,
+				src: urls[0],
+				srcset: urls,
+				org: '',
+				target: '',
+				// data: data,
+				// media: media,
+				dimensions: orgDimensions,
+			};
+			array.push(imageData);
+		}
+		return array;
+	}
+
+	var minX = 100, maxX = 200, minY = 100, maxY = 200, count = 4;
+	var sizeSetup = {
+		x: [minX, maxX],
+		y: [minY, maxY],
+		count: count
+	};
+
+	var ratio = params.ratio || 'org', size = params.size || 'md';
+	var allImageData = getAllImageData();
+	libs.util.log(allImageData);
+	return allImageData;
 }
 
 function forceArray(o) {

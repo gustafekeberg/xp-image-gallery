@@ -8,20 +8,8 @@
 			<occurrences minimum="0" maximum="1"/>
 			<help-text>Settings for the thumbnails.</help-text>
 			<options minimum="0" maximum="100">
-				<option name="click">
-					<label>Click action</label>
-					<default>true</default>
-					<help-text>Open image or viewer when image is clicked.</help-text>
-				</option>
-				<option name="captions">
-					<label>Captions</label>
-					<default>true</default>
-					<items>
-						<inline mixin="thumbnail-captions"/>
-					</items>
-				</option>
 				<option name="shape">
-					<label>Shape</label>
+					<label>Crop</label>
 					<default>true</default>
 					<items>
 						<inline mixin="thumbnail-shape"/>
@@ -34,11 +22,26 @@
 						<inline mixin="thumbnail-style"/>
 					</items>
 				</option>
+				<option name="click">
+					<label>Click action</label>
+					<default>true</default>
+					<help-text>Open image or viewer when image is clicked.</help-text>
+					<items>
+						<inline mixin="thumbnail-target"/>
+					</items>
+				</option>
 				<option name="size">
 					<label>Size</label>
 					<default>true</default>
 					<items>
 						<inline mixin="thumbnail-size"/>
+					</items>
+				</option>
+				<option name="captions">
+					<label>Captions</label>
+					<default>true</default>
+					<items>
+						<inline mixin="thumbnail-captions"/>
 					</items>
 				</option>
 			</options>
