@@ -89,6 +89,16 @@ var getData = {
 		var style = selectedDesign ? libs.content.get({ key: selectedDesign	}) : undefined;
 		var styleData = style ? style.data : undefined;
 		return styleData;
+	},
+	breakPoints: function () {
+		// return default breakpoints or get from siteConfig
+		var screenBreakPoints = {
+			xs: 0, // min-width in pixels
+			sm: 768, // min-width in pixels
+			md: 992, // min-width in pixels
+			lg: 1200, // min-width in pixels
+		};
+		return screenBreakPoints;
 	}
 };
 
@@ -303,13 +313,8 @@ function getSizesAttr() {
 	var sizesAttr = "";
 	// get column styles from config
 	var colStyles = styleData.columns;
-	var screenBreakPoints = {
-		xs: '',
-		sm: '(min-width: 768px)',
-		md: '(min-width: 992px)',
-		lg: '(min-width: 1200px)',
-	};
-	var xsViewWidth;
+	var screenBreakPoints = getData.breakPoints();
+	var xsViewWidth = '';
 	var sizes = {
 		'1': String(Math.round(100*1/12)) + 'vw',
 		'2': String(Math.round(100*2/12)) + 'vw',
@@ -331,17 +336,18 @@ function getSizesAttr() {
 		var screenSize = selected[i];
 		var size = colStyles[screenSize];
 		var col = size.col;
-		var breakPoint = screenBreakPoints[screenSize];
+		var breakPoint = '(min-width: ' + screenBreakPoints[screenSize] + 'px)';
 		var viewWidth = sizes[col];
 
 		// append to sizesAttr if breakpoint setting exists
-		if (breakPoint && viewWidth)
+		if (breakPoint && viewWidth && screenSize !== 'xs')
 			sizesAttr += breakPoint + ' ' + viewWidth + ', ';
-		if (screenSize = 'xs')
+		if (screenSize == 'xs')
 			xsViewWidth = viewWidth;
 	}
 	// add xsViewWidth or 100vw to end of sizesAttr
 	sizesAttr += xsViewWidth || '100vw';
+	libs.util.log(sizesAttr);
 	return sizesAttr;
 }
 
@@ -376,11 +382,10 @@ function prepImageData() {
 		{
 			var item = sizes[i];
 			var scale = 'block(' + item.x + ',' + item.y + ')';
-			var url = libs.portal.imageUrl({id: id, scale: scale});
+			var url = libs.portal.imageUrl({id: id, scale: scale, quality: 50});
 			urls.push(url);
 			srcset.push(url + ' ' + item.x + 'w');
 		}
-		libs.util.log(srcset);
 		return {
 			urls: urls,
 			srcset: srcset.join(', '),
@@ -429,12 +434,16 @@ function prepImageData() {
 			var data = current.data;
 			var media = current.x.media;
 			var imageInfo = media.imageInfo;
-			var orgSize = [imageInfo.imageWidth, imageInfo.imageHeight];
-			var ratio = orgSize[0] / orgSize[1];
+			var orgX = imageInfo.imageWidth;
+			var orgY = imageInfo.imageHeight;
+			var orgSize = [orgX, orgY];
+			var ratio = orgX / orgY;
 
 			// Config for thumbnails srcset
 			var minSize = 256;
-			var minX = minSize, maxX = orgSize[0], minY = minSize / ratio, maxY = orgSize[1], count = 4;
+			var max = getData.breakPoints().sm >= minSize ? getData.breakPoints().sm : minSize;
+			var maxSize = (orgY >= max && orgX >= max) ? max : (orgY >= orgX ? orgX : orgY);
+			var minX = minSize, maxX = maxSize, minY = minSize / ratio, maxY = maxSize, count = 4;
 			if (params.shape == 'square')
 			{
 				maxX = maxX < maxY ? maxX : maxY;
