@@ -25,6 +25,49 @@
 	  			</config>
 	  			<default>bootstrap3</default>
 	  		</input>
+				<item-set name="breakpoints">
+					<label>Screen width breakpoints</label>
+					<help-text>Customize screen width breakpoints (grid). Defaults: xs = 0 px, sm = 768 px, md = 992 px, lg = 1200 px</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<items>
+						<input name="xs" type="TextLine">
+							<label>XS (0)</label>
+							<help-text>Extra small</help-text>
+							<occurrences minimum="1" maximum="1"/>
+							<config>
+								<regexp>^\d+$</regexp>
+							</config>
+							<default>0</default>
+						</input>
+						<input name="sm" type="TextLine">
+							<label>SM (768)</label>
+							<help-text>Small</help-text>
+							<occurrences minimum="1" maximum="1"/>
+							<config>
+								<regexp>^\d+$</regexp>
+							</config>
+							<default>768</default>
+						</input>
+						<input name="md" type="TextLine">
+							<label>MD (992)</label>
+							<help-text>Medium</help-text>
+							<occurrences minimum="1" maximum="1"/>
+							<config>
+								<regexp>^\d+$</regexp>
+							</config>
+							<default>992</default>
+						</input>
+						<input name="lg" type="TextLine">
+							<label>LG (1200)</label>
+							<help-text>Large</help-text>
+							<occurrences minimum="1" maximum="1"/>
+							<config>
+								<regexp>^\d+$</regexp>
+							</config>
+							<default>1200</default>
+						</input>
+					</items>
+				</item-set>
   		</items>
   	</field-set>
   </config>
