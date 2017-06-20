@@ -65,7 +65,6 @@ function handleGet (req) {
 	};
 }
 
-
 var getData = {
 	// get to the data used in the display gallery part
 	content: function () {
@@ -166,10 +165,9 @@ function getPSWPUIOptions () {
 
 	var styleData = getData.styleData();
 	// Return if no pswp settings exist
-
+	if (!styleData) return;
 	var viewer = styleData.viewer || undefined;
-	if (!viewer || !viewer.pswp)
-	return;
+	if (!viewer || !viewer.pswp) return;
 	var pswp = viewer.pswp;
 
 	var controls = pswp.controls;
@@ -189,6 +187,16 @@ function getPSWPUIOptions () {
 			shareEl: controls.share ? true : false,
 			zoomEl: controls.zoom ? true : false,
 		};
+		// If animations is defined get settings else disable all animations
+		if (controls.animations) {
+			var animations = controls.animations;
+			PSWPUIOptions.showHideOpacity = animations.zoomFade ? true : false;
+			PSWPUIOptions.getThumbBoundsFn = animations.thumbBounds ? false : undefined;
+		}
+		else if (!controls.animations) {
+			PSWPUIOptions.hideAnimationDuration = 0;
+			PSWPUIOptions.showAnimationDuration = 0;
+		}
 	}
 	return PSWPUIOptions;
 
@@ -347,7 +355,6 @@ function getSizesAttr() {
 	}
 	// add xsViewWidth or 100vw to end of sizesAttr
 	sizesAttr += xsViewWidth || '100vw';
-	libs.util.log(sizesAttr);
 	return sizesAttr;
 }
 
@@ -391,22 +398,21 @@ function prepImageData() {
 			srcset: srcset.join(', '),
 		};
 	}
-	function calcScale (x, y) {
-	}
 
 	function getSizes (params) {
 		/*
 		returns array of sizes calculated from following params
 		getSizes({x: [min, max], y: [min, max], count: count})
 		*/
+		var shape = params.shape;
 		var x = {
-			min: params.x[0],
-			max: params.x[1],
+			min: params[shape].x.min,
+			max: params[shape].x.max
 		};
 		var y = {
-			min: params.y[0],
-			max: params.y[1],
-		}
+			min: params[shape].y.min,
+			max: params[shape].y.max
+		};
 		var count = params.count - 1;
 		x.span = x.max - x.min;
 		y.span = y.max - y.min;
@@ -434,31 +440,49 @@ function prepImageData() {
 			var data = current.data;
 			var media = current.x.media;
 			var imageInfo = media.imageInfo;
-			var orgX = imageInfo.imageWidth;
-			var orgY = imageInfo.imageHeight;
-			var orgSize = [orgX, orgY];
-			var ratio = orgX / orgY;
+			var origX = imageInfo.imageWidth;
+			var origY = imageInfo.imageHeight;
+			var orgSize = [origX, origY];
+			var ratio = origX / origY;
 
-			// Config for thumbnails srcset
-			var minSize = 256;
-			var max = getData.breakPoints().sm >= minSize ? getData.breakPoints().sm : minSize;
-			var maxSize = (orgY >= max && orgX >= max) ? max : (orgY >= orgX ? orgX : orgY);
-			var minX = minSize, maxX = maxSize, minY = minSize / ratio, maxY = maxSize, count = 4;
-			if (params.shape == 'square')
-			{
-				maxX = maxX < maxY ? maxX : maxY;
-				maxY = maxX;
-				minX = minSize;
-				minY = minX
-			}
-			var sizeSetup = {
-				x: [minX, maxX],
-				y: [minY, maxY],
-				count: count
+			// Configure thumbnails srcset
+
+			// minimum value
+			var min = 256;
+			// get maximum value for size from breakPoints setup compare to be equal or greater than min, double breakPoint value for HDPI
+			var maxLimit = getData.breakPoints().sm >= min ? getData.breakPoints().sm * 2 : min;
+
+			// compare and set max to original image max values or less and use shortest dimension (x/y)
+			var max = (origY >= maxLimit && origX >= maxLimit) ? maxLimit : (origY >= origX ? origX : origY);
+
+			// setup and calculate sizeModel for getSizes function
+			var sizeModel = {
+				shape: params.shape,
+				original: {
+					x: {
+						min: min,
+						max: max
+					},
+					y: {
+						min: min / ratio,
+						max: max / ratio
+					},
+				},
+				square: {
+					x: {
+						min: min,
+						max: max < (max / ratio) ? max : max / ratio
+					},
+					y: {
+						min: min,
+						max: max < (max / ratio) ? max : max / ratio
+					},
+				},
+				// how many versions in srcset?
+				count: 8,
 			};
 
-			var urls = getImgUrls(id, getSizes(sizeSetup));
-
+			var urls = getImgUrls(id, getSizes(sizeModel));
 
 			var imageData = {
 				id: id,

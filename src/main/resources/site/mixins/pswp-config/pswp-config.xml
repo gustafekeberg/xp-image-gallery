@@ -2,7 +2,7 @@
 <mixin>
 	<display-name>Photoswipe - config</display-name>
 	<items>
-		
+
 		<option-set name="controls">
 			<label>UI setup</label>
 			<expanded>false</expanded>
@@ -57,30 +57,56 @@
 				<option name="fullscreen">
 					<label>Full screen</label>
 					<help-text></help-text>
+					<default>true</default>
 				</option>
 				<option name="close">
 					<label>Close</label>
 					<help-text></help-text>
+					<default>true</default>
 				</option>
 				<option name="caption">
 					<label>Caption</label>
 					<help-text></help-text>
+					<default>true</default>
 				</option>
 				<option name="zoom">
 					<label>Zoom</label>
 					<help-text></help-text>
+					<default>true</default>
 				</option>
 				<option name="counter">
 					<label>Counter</label>
 					<help-text></help-text>
+					<default>true</default>
 				</option>
 				<option name="arrow">
-					<label>Arrow</label>
+					<label>Arrows</label>
 					<help-text></help-text>
+					<default>true</default>
+				</option>
+				<option name="animations">
+					<label>Animations</label>
+					<help-text></help-text>
+					<default>true</default>
+					<items>
+						<input name="zoomFade" type="CheckBox">
+							<label>Fade in zoom</label>
+							<help-text>Use this setting when dimensions of thumbnails and images don't match.</help-text>
+							<occurrences minimum="0" maximum="1"/>
+							<default>checked</default>
+						</input>
+						<input name="thumbBounds" type="CheckBox">
+							<label>Disable zoom from thumb</label>
+							<help-text></help-text>
+							<occurrences minimum="0" maximum="1"/>
+							<default></default>
+						</input>
+					</items>
 				</option>
 				<option name="preloader">
 					<label>Preloader</label>
 					<help-text></help-text>
+					<default>true</default>
 				</option>
 			</options>
 		</option-set>
