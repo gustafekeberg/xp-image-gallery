@@ -35,8 +35,11 @@
 	itemprop="contentUrl"
 	>
 	<img
+	th:alt="${'Gallery thumbnail (' + image.title + ')'}"
 	th:class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
-	th:src="${portal.imageUrl({ '_id=' + image.id, '_scale=max(768)'})}"
+	th:src="${image.src}"
+	th:attr="srcset=${image.srcset}"
+	th:sizes="${style.sizesAttr}"
 	/>
 
 	<!--/* This is the setup for figcaptions. If no figcaption is present the tag will be removed. The child elements will be displayed only if conditions are fulfilled! */-->
@@ -57,7 +60,7 @@
 		<br/>
 		</div>
 		<div th:remove="${(cpt.artist and (image.artist or (cpt.defaultText and cpt.defaultText.artist))) ? 'tag' : 'all'}">
-		<span th:text="${( 
+		<span th:text="${(
 		(cpt.defaultText and cpt.defaultText.artist)
 		? cpt.defaultText.artist
 		: (
@@ -67,7 +70,7 @@
 		<br/>
 		</div>
 		<div th:remove="${(cpt.copyright and (image.copyright or (cpt.defaultText and cpt.defaultText.copyright))) ? 'tag' : 'all'}">
-		<span th:text="${( 
+		<span th:text="${(
 		(cpt.defaultText and cpt.defaultText.copyright)
 		? cpt.defaultText.copyright
 		: (

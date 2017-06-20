@@ -7,25 +7,25 @@
 					<expanded>false</expanded>
 					<occurrences minimum="0" maximum="1"/>
 					<options minimum="0" maximum="4">
-						<option name="col-xs">
+						<option name="xs">
 							<label>Extra small screen</label>
 							<items>
 								<inline mixin="col-style"/>
 							</items>
 						</option>
-						<option name="col-sm">
+						<option name="sm">
 							<label>Small screen</label>
 							<items>
 								<inline mixin="col-style"/>
 							</items>
 						</option>
-						<option name="col-md">
+						<option name="md">
 							<label>Medium screen</label>
 							<items>
 								<inline mixin="col-style"/>
 							</items>
 						</option>
-						<option name="col-lg">
+						<option name="lg">
 							<label>Large screen</label>
 							<items>
 								<inline mixin="col-style"/>

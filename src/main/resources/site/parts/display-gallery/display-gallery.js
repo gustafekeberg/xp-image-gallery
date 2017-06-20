@@ -142,6 +142,7 @@ function makeStyleModel () {
 	var defaults = {
 		grid: "bootstrap3",
 		cols: getColsetup(),
+		sizesAttr: getSizesAttr(),
 		thumbnails: thumbDefaults,
 		viewer: {},
 	};
@@ -272,8 +273,8 @@ download: true
 
 function getColsetup() {
 	var styleData = getData.styleData();
-	var defaultSetup = "col-xs-12";
-	var cssClass = "";
+	var defaultSetup = 'col-xs-12';
+	var cssClass = '';
 	if (!styleData || !styleData.columns)
 	return defaultSetup;
 	// get column styles from config
@@ -288,9 +289,60 @@ function getColsetup() {
 		var size = colStyles[screenSize];
 		// construct CSS class if size setting exists
 		if (size)
-		cssClass += screenSize + "-" + size.col + " ";
+		cssClass += 'col-' + screenSize + '-' + size.col + ' ';
 	}
 	return cssClass;
+}
+
+function getSizesAttr() {
+	// Construct sizes attribute from grid setup
+	var styleData = getData.styleData();
+	var defaultAttr = "100vw";
+	if (!styleData || !styleData.columns)
+	return defaultAttr;
+	var sizesAttr = "";
+	// get column styles from config
+	var colStyles = styleData.columns;
+	var screenBreakPoints = {
+		xs: '',
+		sm: '(min-width: 768px)',
+		md: '(min-width: 992px)',
+		lg: '(min-width: 1200px)',
+	};
+	var xsViewWidth;
+	var sizes = {
+		'1': String(Math.round(100*1/12)) + 'vw',
+		'2': String(Math.round(100*2/12)) + 'vw',
+		'3': String(Math.round(100*3/12)) + 'vw',
+		'4': String(Math.round(100*4/12)) + 'vw',
+		'5': String(Math.round(100*5/12)) + 'vw',
+		'6': String(Math.round(100*6/12)) + 'vw',
+		'7': String(Math.round(100*7/12)) + 'vw',
+		'8': String(Math.round(100*8/12)) + 'vw',
+		'9': String(Math.round(100*9/12)) + 'vw',
+		'10': String(Math.round(100*10/12)) + 'vw',
+		'11': String(Math.round(100*11/12)) + 'vw',
+		'12': String(Math.round(100*12/12)) + 'vw',
+	};
+	// force array of selected styles
+	var selected = forceArray(colStyles._selected);
+	for (var i = 0, len = selected.length; i < len; i++) {
+		// get screensize specific style
+		var screenSize = selected[i];
+		var size = colStyles[screenSize];
+		var col = size.col;
+		var breakPoint = screenBreakPoints[screenSize];
+		var viewWidth = sizes[col];
+
+		// append to sizesAttr if breakpoint setting exists
+		if (breakPoint && viewWidth)
+			sizesAttr += breakPoint + ' ' + viewWidth + ', ';
+		if (screenSize = 'xs')
+			xsViewWidth = viewWidth;
+	}
+	// add xsViewWidth or 100vw to end of sizesAttr
+	sizesAttr += xsViewWidth || '100vw';
+	return sizesAttr;
 }
 
 function prepImageData() {
@@ -319,17 +371,24 @@ function prepImageData() {
 	function getImgUrls (id, sizes) {
 		// id: string, sizes: [{x: int, y: int}, {x: int, y: int}]
 		var urls = [];
+		var srcset = [];
 		for (var i = 0, len = sizes.length; i < len; i ++)
 		{
 			var item = sizes[i];
 			var scale = 'block(' + item.x + ',' + item.y + ')';
 			var url = libs.portal.imageUrl({id: id, scale: scale});
 			urls.push(url);
+			srcset.push(url + ' ' + item.x + 'w');
 		}
-		return urls;
+		libs.util.log(srcset);
+		return {
+			urls: urls,
+			srcset: srcset.join(', '),
+		};
 	}
 	function calcScale (x, y) {
 	}
+
 	function getSizes (params) {
 		/*
 		returns array of sizes calculated from following params
@@ -354,7 +413,7 @@ function prepImageData() {
 		{
 			var size = {
 				x: Math.round(x.min + x.interval * i),
-				y: Math.round(y.min + y.interval * i)
+				y: Math.round(y.min + y.interval * i),
 			}
 			sizes.push(size);
 		}
@@ -370,8 +429,27 @@ function prepImageData() {
 			var data = current.data;
 			var media = current.x.media;
 			var imageInfo = media.imageInfo;
-			var orgDimensions = [imageInfo.imageWidth, imageInfo.imageHeight];
-			var urls = getImgUrls(id, getSizes(sizeSetup))
+			var orgSize = [imageInfo.imageWidth, imageInfo.imageHeight];
+			var ratio = orgSize[0] / orgSize[1];
+
+			// Config for thumbnails srcset
+			var minSize = 256;
+			var minX = minSize, maxX = orgSize[0], minY = minSize / ratio, maxY = orgSize[1], count = 4;
+			if (params.shape == 'square')
+			{
+				maxX = maxX < maxY ? maxX : maxY;
+				maxY = maxX;
+				minX = minSize;
+				minY = minX
+			}
+			var sizeSetup = {
+				x: [minX, maxX],
+				y: [minY, maxY],
+				count: count
+			};
+
+			var urls = getImgUrls(id, getSizes(sizeSetup));
+
 
 			var imageData = {
 				id: id,
@@ -380,29 +458,21 @@ function prepImageData() {
 				artist: data.artist,
 				copyright: data.copyright,
 				tags: data.tags,
-				src: urls[0],
-				srcset: urls,
+				src: urls.urls[0],
+				srcset: urls.srcset,
 				org: '',
 				target: '',
 				// data: data,
 				// media: media,
-				dimensions: orgDimensions,
+				dimensions: orgSize,
 			};
 			array.push(imageData);
 		}
 		return array;
 	}
 
-	var minX = 100, maxX = 200, minY = 100, maxY = 200, count = 4;
-	var sizeSetup = {
-		x: [minX, maxX],
-		y: [minY, maxY],
-		count: count
-	};
-
 	var ratio = params.ratio || 'org', size = params.size || 'md';
 	var allImageData = getAllImageData();
-	libs.util.log(allImageData);
 	return allImageData;
 }
 
