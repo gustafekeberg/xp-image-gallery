@@ -35,7 +35,7 @@
 	<a
 	th:remove="${(#maps.isEmpty(style.viewer) and !style.thumbnails.click) ? 'tag' : 'none'}"
 	th:attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
-	th:href="${portal.imageUrl({ '_id=' + image.id, '_scale=max(1920)'})}"
+	th:href="${image.large}"
 	itemprop="contentUrl"
 	>
 	<img

@@ -19,9 +19,13 @@ function handleGet (req) {
 	var siteConfig = getData.siteConfig();
 	var gallery =	getData.gallery();
 
+	// Thymeleaf templates
+	var galleryNotFound = resolve('gallery-not-found.html')
+	var galleryView = resolve('gallery.html');
+
 	// Display friendly message if no gallery is found
 	if (!gallery) {
-		return { body: '<div><p><strong>Gallery not found!</strong></p><p>Please check your settings!</p></div>' };
+		return { body: libs.thymeleaf.render(galleryNotFound, {}) };
 	}
 
 	// parse and prepare data
@@ -37,9 +41,8 @@ function handleGet (req) {
 		PSWPUIOptions: getPSWPUIOptions() ? JSON.stringify(getPSWPUIOptions()) : undefined,
 	};
 
-	// Get view and render part-body
-	var view = resolve('gallery.html');
-	var body = libs.thymeleaf.render(view, model);
+	// Render part-body
+	var body = libs.thymeleaf.render(galleryView, model);
 
 	var bodyEnd = [];
 	if (styleModel.viewer)
@@ -381,21 +384,48 @@ function prepImageData() {
 		params.target = thumbs.click.target;
 	}
 
-	function getImgUrls (id, sizes) {
-		// id: string, sizes: [{x: int, y: int}, {x: int, y: int}]
+	function getImgUrls (id, params) {
+		// id = string, params = { sizeList: [{x: int, y: int}, {x: int, y: int}], original: {x: x, y: y}}
 		var urls = [];
 		var srcset = [];
-		for (var i = 0, len = sizes.length; i < len; i ++)
+		var largeUrl;
+		var largeXY = [];
+		var maxSqPx = 1920; // Max pixel length for square image
+		for (var i = 0, len = params.sizeList.length; i < len; i ++)
 		{
-			var item = sizes[i];
+			var item = params.sizeList[i];
 			var scale = 'block(' + item.x + ',' + item.y + ')';
 			var url = libs.portal.imageUrl({id: id, scale: scale, quality: 50});
 			urls.push(url);
 			srcset.push(url + ' ' + item.x + 'w');
 		}
+		var x, y, origX = params.original.x, origY = params.original.y;
+		var ratio = origX / origY;
+		var largeScale = '';
+		var click = getData.styleData().thumbnails.click
+		if (click && click.target == "original" )
+			{
+				if (origX >= origY) {
+					y = Math.round(origY >= maxSqPx ? maxSqPx : origY);
+					x = Math.round(origY * ratio);
+					largeScale = 'block(' + x + ',' + y + ')';
+					largeUrl = libs.portal.imageUrl({id: id, scale: largeScale});
+				}
+				else {
+					y = Math.round(origX >= maxSqPx ? maxSqPx : origX);
+					x = Math.round(origX / ratio);
+					largeScale = 'block(' + x + ',' + y + ')';
+					largeUrl = libs.portal.imageUrl({id: id, scale: largeScale});
+				}
+			}
+		else if (click && click.target == "cropped" )
+			{
+			}
 		return {
 			urls: urls,
 			srcset: srcset.join(', '),
+			large: largeUrl,
+			largeXY: [x, y],
 		};
 	}
 
@@ -428,7 +458,13 @@ function prepImageData() {
 			}
 			sizes.push(size);
 		}
-		return sizes;
+		return {
+			sizeList: sizes,
+			original: {
+				x: params.original.x.max,
+				y: params.original.y.max,
+			}
+		};
 	}
 	function getAllImageData() {
 		var array = [];
@@ -493,11 +529,12 @@ function prepImageData() {
 				tags: data.tags,
 				src: urls.urls[0],
 				srcset: urls.srcset,
-				org: '',
-				target: '',
+				large: urls.large,
+				// target: '',
 				// data: data,
 				// media: media,
 				dimensions: orgSize,
+				largeXY: urls.largeXY,
 			};
 			array.push(imageData);
 		}
