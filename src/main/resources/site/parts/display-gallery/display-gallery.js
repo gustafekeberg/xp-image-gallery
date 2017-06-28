@@ -390,7 +390,7 @@ function prepImageData() {
 		var srcset = [];
 		var largeUrl;
 		var largeXY = [];
-		var maxSqPx = 1920; // Max pixel length for square image
+		var maxSqPx = 1920; // Max pixel length for square image. TODO: setup this in site config!
 		for (var i = 0, len = params.sizeList.length; i < len; i ++)
 		{
 			var item = params.sizeList[i];
@@ -413,7 +413,7 @@ function prepImageData() {
 				}
 				else {
 					y = Math.round(origX >= maxSqPx ? maxSqPx : origX);
-					x = Math.round(origX / ratio);
+					x = Math.round(origX * ratio);
 					largeScale = 'block(' + x + ',' + y + ')';
 					largeUrl = libs.portal.imageUrl({id: id, scale: largeScale});
 				}
@@ -472,6 +472,8 @@ function prepImageData() {
 			var current = libs.content.get({
 				key: list[i]
 			});
+
+			// Data for current image
 			var id = current._id;
 			var data = current.data;
 			var media = current.x.media;
@@ -480,6 +482,7 @@ function prepImageData() {
 			var origY = imageInfo.imageHeight;
 			var orgSize = [origX, origY];
 			var ratio = origX / origY;
+			var orientation = origX > origY ? 'landscape' : (origX == origY ? 'square' : 'portrait');
 
 			// Configure thumbnails srcset
 
@@ -517,7 +520,7 @@ function prepImageData() {
 				// how many versions in srcset?
 				count: 8,
 			};
-
+			libs.util.log(origX + ', ' + origY);
 			var urls = getImgUrls(id, getSizes(sizeModel));
 
 			var imageData = {
@@ -535,6 +538,7 @@ function prepImageData() {
 				// media: media,
 				dimensions: orgSize,
 				largeXY: urls.largeXY,
+				orientation: orientation,
 			};
 			array.push(imageData);
 		}
