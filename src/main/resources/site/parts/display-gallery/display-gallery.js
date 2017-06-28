@@ -31,7 +31,6 @@ function handleGet (req) {
 	// parse and prepare data
 	var styleModel = makeStyleModel(); // prepare style data
 	var imageData = prepImageData();
-	libs.util.log(config);
 	// Setup thymeleaf model for part
 	var model = {
 		config: config,
@@ -530,7 +529,6 @@ function prepImageData() {
 				count: 8,
 			};
 			var urls = getImgUrls(id, getSizes(sizeModel));
-			// libs.util.log(params.shape);
 			var imageData = {
 				id: id,
 				title: current.displayName,
