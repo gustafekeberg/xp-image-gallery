@@ -34,17 +34,20 @@
 	<!--/* Remove a-tag if there's no viewer and no click action defined */-->
 	<a
 	th:remove="${(#maps.isEmpty(style.viewer) and !style.thumbnails.click) ? 'tag' : 'none'}"
-	th:attr="data-size=${image.dimensions[0] + 'x' + image.dimensions[1]}"
+	th:attr="data-size=${image.largeXY[0] + 'x' + image.largeXY[1]}"
 	th:href="${image.large}"
 	itemprop="contentUrl"
 	>
-	<img
-	th:alt="${'Gallery thumbnail (' + image.title + ')'}"
-	th:class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
-	th:src="${image.src}"
-	th:attr="srcset=${image.srcset}"
-	th:sizes="${style.sizesAttr}"
-	/>
+
+	<div th:class="${'css-crop-' + image.orientation}">
+		<img
+		th:alt="${'Gallery thumbnail (' + image.title + ')'}"
+		th:class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
+		th:src="${image.src}"
+		th:attr="srcset=${image.srcset}"
+		th:sizes="${style.sizesAttr}"
+		/>
+	</div>
 
 	<!--/* This is the setup for figcaptions. If no figcaption is present the tag will be removed. The child elements will be displayed only if conditions are fulfilled! */-->
 	<figcaption
