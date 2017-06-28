@@ -1,49 +1,23 @@
 <!--/* The gallery container */-->
-<div class="pswp-gallery-wrapper">
+<div
+	class="pswp-gallery-wrapper"
+	itemscope=""
+	itemtype="http://schema.org/ImageGallery"
+	>
 	<header th:if="${config.displayHeader}">
 		<h1 th:text="${name}">
 			Gallery
 		</h1>
 	</header>
-	<style>
-	.image-container .img-responsive {
-		width: 100%;
-	}
-	.thumb-crop-landscape, .thumb-crop-portrait {
-		width: 100%;
-		position: relative;
-		display: inline-block;
-		overflow: hidden;
-	}
-	.thumb-crop-portrait .dummy, .thumb-crop-landscape .dummy {
-		margin-top: 100%;
-	}
-	.thumb-crop-portrait img, .thumb-crop-portrait .img-responsive {
-		position: absolute;
-		min-width: 100%;
-		min-height: 100%;
-		width: 100%;
-		height: auto;
-		top: -25%;
-		left: 0;
-		/*
-		bottom: 0;
-		right: 0;*/
-	}
-	.thumb-crop-landscape img, .thumb-crop-landscape .img-responsive {
-		position: absolute;
-		min-width: 100%;
-		min-height: 100%;
-		max-width: initial;
-		height: 100%;
-		width: auto;
-		left: -25%;
-		top: 0;
-		/*
-		bottom: 0;
-		right: 0;*/
-	}
-	</style>
+	<!--/* Gallery description */-->
+	<div
+	class="well"
+	th:if="${config.description}"
+	th:utext="${data.description}"
+	itemprop="description"
+	>
+	</div>
+
 	<!--/* The image-list container */-->
 	<div
 	th:class="'image-container row clearfix' +
@@ -52,10 +26,8 @@
 	${(style.viewer and style.viewer.pswp) ? ' pswp-gallery-container ' : ''}
 	"
 	th:attr="UIOptions=${PSWPUIOptions}"
-	itemscope=""
-	itemtype="http://schema.org/ImageGallery"
-
 	>
+
 	<!--/* The image container */-->
 	<figure
 	th:class="${style.cols || ''} + ${(style.css and style.css.items) ? ' ' + style.css.items : ''}"
@@ -68,19 +40,20 @@
 	<!--/* Remove a-tag if there's no viewer and no click action defined */-->
 	<a
 	th:remove="${(#maps.isEmpty(style.viewer) and !style.thumbnails.click) ? 'tag' : 'none'}"
-	th:attr="data-size=${image.largeXY[0] + 'x' + image.largeXY[1]}"
+	th:attr="data-size=${#lists.isEmpty(image.largeXY) ? '' : image.largeXY[0] + 'x' + image.largeXY[1]}"
 	th:href="${image.large}"
 	itemprop="contentUrl"
 	>
 
-	<!-- /*<div th:remove="${image.cropThumb != 'square' ? 'tag' : 'none'}" th:class="'thumb-crop-' + ${image.orientation == 'portrait' ? 'portrait' : 'landscape'}">
-	<div th:remove="${image.cropThumb != 'square' ? 'tag' : 'none'}" class="dummy">*/ -->
+	<!--/* <div th:remove="${image.cropThumb != 'square' ? 'tag' : 'none'}" th:class="'thumb-crop-' + ${image.orientation == 'portrait' ? 'portrait' : 'landscape'}">
+	<div th:remove="${image.cropThumb != 'square' ? 'tag' : 'none'}" class="dummy"> */-->
 		<img
 		th:alt="${'Gallery thumbnail (' + image.title + ')'}"
 		th:class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
 		th:src="${image.src}"
 		th:attr="srcset=${image.srcset}"
 		th:sizes="${style.sizesAttr}"
+		itemprop="thumbnail"
 		/>
 	<!-- /*</div>
 </div>*/ -->
@@ -90,6 +63,7 @@
 	th:class="${(cpt.hide) ? 'sr-only' : ''}"
 	th:if="${(style.thumbnails and style.thumbnails.captions)}"
 	th:with="cpt=${style.thumbnails.captions}"
+	itemprop="caption"
 	>
 		<div th:remove="${(image.title == '' or !cpt.title) ? 'all' : 'tag'}">
 		<strong th:text="${image.title}" />
@@ -125,4 +99,45 @@
 </a>
 </figure>
 </div>
+
+<style>
+.image-container .img-responsive {
+	width: 100%;
+}
+.thumb-crop-landscape, .thumb-crop-portrait {
+	width: 100%;
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+}
+.thumb-crop-portrait .dummy, .thumb-crop-landscape .dummy {
+	margin-top: 100%;
+}
+.thumb-crop-portrait img, .thumb-crop-portrait .img-responsive {
+	position: absolute;
+	min-width: 100%;
+	min-height: 100%;
+	width: 100%;
+	height: auto;
+	top: -25%;
+	left: 0;
+	/*
+	bottom: 0;
+	right: 0;*/
+}
+.thumb-crop-landscape img, .thumb-crop-landscape .img-responsive {
+	position: absolute;
+	min-width: 100%;
+	min-height: 100%;
+	max-width: initial;
+	height: 100%;
+	width: auto;
+	left: -25%;
+	top: 0;
+	/*
+	bottom: 0;
+	right: 0;*/
+}
+</style>
+
 </div>

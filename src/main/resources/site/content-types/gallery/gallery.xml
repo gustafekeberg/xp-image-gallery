@@ -23,12 +23,30 @@
 						<timezone>true</timezone>
 					</config>
 				</input>
+				<input name="selectedImage" type="ImageSelector">
+					<label>Selected image</label>
+					<help-text>Select an image to represent the gallery</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<config>
+						<allowPath>./*</allowPath>
+				  </config>
+				</input>
+				<input name="summary" type="TextArea">
+					<label>Summary</label>
+					<help-text>Short summary for the gallery</help-text>
+					<default></default>
+				</input>
 			</items>
 		</field-set>
 		<field-set name="content">
 			<label>Content</label>
 			<help-text>Contents of the gallery</help-text>
 			<items>
+				<input name="description" type="HtmlArea">
+					<label>Description</label>
+					<help-text>Description for this gallery.</help-text>
+					<default></default>
+				</input>
 				<input name="images" type="ImageSelector">
 					<label>Images</label>
 					<help-text>Upload your images</help-text>

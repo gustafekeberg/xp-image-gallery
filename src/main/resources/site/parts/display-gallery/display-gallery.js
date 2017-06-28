@@ -31,11 +31,12 @@ function handleGet (req) {
 	// parse and prepare data
 	var styleModel = makeStyleModel(); // prepare style data
 	var imageData = prepImageData();
-
+	libs.util.log(config);
 	// Setup thymeleaf model for part
 	var model = {
 		config: config,
 		style: styleModel,
+		data: gallery.data,
 		name: gallery.displayName,
 		images: imageData,
 		PSWPUIOptions: getPSWPUIOptions() ? JSON.stringify(getPSWPUIOptions()) : undefined,

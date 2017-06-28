@@ -25,7 +25,18 @@
 						<allowPath>${site}/</allowPath>
 					</config>
 				</input>
-				
+				<input name="description" type="CheckBox">
+					<label>Display description</label>
+					<help-text>Display gallery description.</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<default/>
+				</input>
+				<!-- <input name="selectedImage" type="CheckBox">
+					<label>Display selected image</label>
+					<help-text>Display selected image.</help-text>
+					<occurrences minimum="0" maximum="1"/>
+					<default/>
+				</input> -->
 				<item-set name="settingsOverride">
 					<label>Override defaults</label>
 					<help-text>Override default settings settings. Default settings is set in app config.</help-text>
@@ -39,4 +50,3 @@
 		</field-set>
 	</config>
 </part>
-
