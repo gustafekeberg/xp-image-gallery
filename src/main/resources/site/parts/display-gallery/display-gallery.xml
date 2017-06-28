@@ -42,7 +42,7 @@
 					<help-text>Override default settings settings. Default settings is set in app config.</help-text>
 					<occurrences minimum="0" maximum="1"/>
 					<items>
-						<inline mixin="look-setup"/>
+						<inline mixin="design-setup"/>
 					</items>
 				</item-set>
 			</items>

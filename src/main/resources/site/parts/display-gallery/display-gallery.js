@@ -442,7 +442,7 @@ function prepImageData() {
 		returns array of sizes calculated from following params
 		getSizes({x: [min, max], y: [min, max], count: count})
 		*/
-		var shape = params.shape;
+		var shape = params.shape || 'original';
 		// shape = 'original';
 		var x = {
 			min: params[shape].x.min,

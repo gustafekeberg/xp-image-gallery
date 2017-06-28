@@ -3,15 +3,5 @@
 	<display-name>Thumbnail shape</display-name>
 	<items>
 		<inline mixin="crop-ratio"/>
-		<!-- <input name="thumbnailShape" type="RadioButton">
-			<label>Shape</label>
-			<help-text></help-text>
-			<occurrences minimum="0" maximum="1"/>
-			<config>
-				<option value="original">Original</option>
-				<option value="square">Square</option>
-			</config>
-			<default>original</default>
-		</input> -->
 	</items>
 </mixin>
