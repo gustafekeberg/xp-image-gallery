@@ -435,6 +435,7 @@ function prepImageData() {
 		getSizes({x: [min, max], y: [min, max], count: count})
 		*/
 		var shape = params.shape;
+		// shape = 'original';
 		var x = {
 			min: params[shape].x.min,
 			max: params[shape].x.max
@@ -520,9 +521,8 @@ function prepImageData() {
 				// how many versions in srcset?
 				count: 8,
 			};
-			libs.util.log(origX + ', ' + origY);
 			var urls = getImgUrls(id, getSizes(sizeModel));
-
+			libs.util.log(params.shape);
 			var imageData = {
 				id: id,
 				title: current.displayName,
@@ -539,6 +539,7 @@ function prepImageData() {
 				dimensions: orgSize,
 				largeXY: urls.largeXY,
 				orientation: orientation,
+				cropThumb: params.shape
 			};
 			array.push(imageData);
 		}

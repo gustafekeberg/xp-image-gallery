@@ -9,6 +9,40 @@
 	.image-container .img-responsive {
 		width: 100%;
 	}
+	.thumb-crop-landscape, .thumb-crop-portrait {
+		width: 100%;
+		position: relative;
+		display: inline-block;
+		overflow: hidden;
+	}
+	.thumb-crop-portrait .dummy, .thumb-crop-landscape .dummy {
+		margin-top: 100%;
+	}
+	.thumb-crop-portrait img, .thumb-crop-portrait .img-responsive {
+		position: absolute;
+		min-width: 100%;
+		min-height: 100%;
+		width: 100%;
+		height: auto;
+		top: -25%;
+		left: 0;
+		/*
+		bottom: 0;
+		right: 0;*/
+	}
+	.thumb-crop-landscape img, .thumb-crop-landscape .img-responsive {
+		position: absolute;
+		min-width: 100%;
+		min-height: 100%;
+		max-width: initial;
+		height: 100%;
+		width: auto;
+		left: -25%;
+		top: 0;
+		/*
+		bottom: 0;
+		right: 0;*/
+	}
 	</style>
 	<!--/* The image-list container */-->
 	<div
@@ -39,7 +73,8 @@
 	itemprop="contentUrl"
 	>
 
-	<div th:class="${'css-crop-' + image.orientation}">
+	<!-- /*<div th:remove="${image.cropThumb != 'square' ? 'tag' : 'none'}" th:class="'thumb-crop-' + ${image.orientation == 'portrait' ? 'portrait' : 'landscape'}">
+	<div th:remove="${image.cropThumb != 'square' ? 'tag' : 'none'}" class="dummy">*/ -->
 		<img
 		th:alt="${'Gallery thumbnail (' + image.title + ')'}"
 		th:class="'img-responsive' + ${(style.thumbnails and style.thumbnails.style and style.thumbnails.style.shape) ?	' ' + style.thumbnails.style.shape : '' }"
@@ -47,7 +82,8 @@
 		th:attr="srcset=${image.srcset}"
 		th:sizes="${style.sizesAttr}"
 		/>
-	</div>
+	<!-- /*</div>
+</div>*/ -->
 
 	<!--/* This is the setup for figcaptions. If no figcaption is present the tag will be removed. The child elements will be displayed only if conditions are fulfilled! */-->
 	<figcaption
