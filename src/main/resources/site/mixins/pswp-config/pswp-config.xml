@@ -93,7 +93,7 @@
 							<label>Fade in zoom</label>
 							<help-text>Use this setting when dimensions of thumbnails and images don't match.</help-text>
 							<occurrences minimum="0" maximum="1"/>
-							<default>checked</default>
+							<default></default>
 						</input>
 						<input name="thumbBounds" type="CheckBox">
 							<label>Disable zoom from thumb</label>
