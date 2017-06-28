@@ -405,21 +405,28 @@ function prepImageData() {
 		var click = getData.styleData().thumbnails.click
 		if (click && click.target == "original" )
 			{
+				// landscape or original happens to be a square
 				if (origX >= origY) {
 					y = Math.round(origY >= maxSqPx ? maxSqPx : origY);
 					x = Math.round(origY * ratio);
 					largeScale = 'block(' + x + ',' + y + ')';
 					largeUrl = libs.portal.imageUrl({id: id, scale: largeScale});
 				}
+				// portrait
 				else {
-					y = Math.round(origX >= maxSqPx ? maxSqPx : origX);
-					x = Math.round(origX * ratio);
+					y = Math.round(origY >= maxSqPx ? maxSqPx : origY);
+					x = Math.round(origY * ratio);
 					largeScale = 'block(' + x + ',' + y + ')';
 					largeUrl = libs.portal.imageUrl({id: id, scale: largeScale});
 				}
 			}
 		else if (click && click.target == "cropped" )
 			{
+				var maxPx = origY > origX ? origX : origY;
+				y = Math.round(maxPx >= maxSqPx ? maxSqPx : maxPx);
+				x = y;
+				largeScale = 'block(' + x + ',' + y + ')';
+				largeUrl = libs.portal.imageUrl({id: id, scale: largeScale});
 			}
 		return {
 			urls: urls,
@@ -522,7 +529,7 @@ function prepImageData() {
 				count: 8,
 			};
 			var urls = getImgUrls(id, getSizes(sizeModel));
-			libs.util.log(params.shape);
+			// libs.util.log(params.shape);
 			var imageData = {
 				id: id,
 				title: current.displayName,
